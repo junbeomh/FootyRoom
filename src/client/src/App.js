@@ -34,6 +34,14 @@ class App extends React.Component {
   // }
 
   render() {
+
+    const styles = {
+      padding: '20px',
+      width: '250px',
+      height: '250px',
+      backgroundColor: 'yellow',
+    };
+
     return (
       <Router>
         <div id="App">
@@ -43,7 +51,7 @@ class App extends React.Component {
             {/* <Games games={this.state.games} /> */}
             <Route path='/' exact component={Fixtures} />
             <Route path='/standings' component={Standings} />
-            <Route path='/stats' component={Stats} />
+            <Route path='/stats' component={Stats} style={styles}/>
             <Route path='/teams' component={Teams} />
           </Switch>
         </div>

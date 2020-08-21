@@ -55,7 +55,7 @@ class Navigation extends React.Component {
                             <Link to="/teams"> <Nav.Link eventKey={2} href="#teams"> Teams </Nav.Link> </Link> */}
                         </Nav>
                     </Navbar.Collapse>
-                </Navbar>)
+                </Navbar>
             </div>
         );
     }

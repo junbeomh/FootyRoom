@@ -6,8 +6,9 @@ const isDev = require('electron-is-dev')
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 900,
+        height: 950,
+        // resizable: false,
         webPreferences: {
             nodeIntegration: true
         }
@@ -30,7 +31,9 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
 
-// Quit when all windows are closed, except on macOS. There, it's common
+
+
+// Quit when all windows are closed, except on macOS. There, itw's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {

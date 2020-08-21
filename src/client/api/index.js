@@ -70,5 +70,6 @@ export const getTeamsStandingData = teams =>
         pts: team['points'],
         id: team['team_id'],
         rank: team['rank'],
-        logo: team['logo']
+        logo: team['logo'],
+        forme: team['forme']
     }));
