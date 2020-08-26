@@ -5,6 +5,7 @@ import App from './client/src/App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter as Router, Route } from 'react-router';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'semantic-ui-css/semantic.min.css'
 
 
 ReactDOM.render(<App />, document.getElementById('root'));

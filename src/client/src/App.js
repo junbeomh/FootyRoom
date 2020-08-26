@@ -13,6 +13,7 @@ import {
   getGameScores,
   getFixturesData
 } from "../api"
+import Fixture from './Components/Match/match.js';
 
 
 class App extends React.Component {
@@ -53,6 +54,8 @@ class App extends React.Component {
             <Route path='/standings' component={Standings} />
             <Route path='/stats' component={Stats} style={styles}/>
             <Route path='/teams' component={Teams} />
+            <Route path='/fixture/' component={Fixture} />
+
           </Switch>
         </div>
       </Router>

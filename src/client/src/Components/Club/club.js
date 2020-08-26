@@ -19,12 +19,28 @@ import "../../styles/index.css"
 export class Club extends React.Component {
     constructor(props) {
         super(props);
+        this.handleBack = this.handleBack.bind(this); // you are missing this line
         this.state = {
         };
     }
 
+    handleBack() {
+        this.props.history.push('/teams');
+      }
+    
+
     render() {
-        <p> Club Screen </p>
+        return (
+            <div className="mb-2">
+                <h1> Fixture Page </h1>
+                <Button
+                    onClick={this.handleBack}
+                    
+                    variant="secondary" size="lg">
+                    Large button
+              </Button>
+            </div>
+        )
     }
 
 }

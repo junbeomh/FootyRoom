@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import Geocode from "react-geocode";
 import { Button } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner'
+import { Redirect, } from 'react-router'
+import { Link, } from 'react-router-dom'
+
 import "../../styles/index.css"
 
 
 const mapStyles = {
   width: '100%',
-  height: '100%',
+  height: '52em',
   position: 'relative'
 };
 
@@ -18,6 +22,7 @@ export class Teams extends Component {
     Geocode.setLanguage("en");
     Geocode.setRegion("uk");
     this.state = {
+      redirect: false,
       zomm: 7,
       showingInfoWindow: false,   //Hides or the shows the infoWindow
       activeMarker: {},           //Shows the active marker upon click
@@ -249,9 +254,13 @@ export class Teams extends Component {
       });
   };
 
-  viewClub = () => {
-    console.log("clicked on infowindow");
-  }
+  handleClick = (fixture) => {
+    return (event) => {
+      console.log('hi');
+      this.props.history.push('/');
+
+    }
+}
 
   // TODO: use this during api service and add it to the data object for client 
   getLatLng = (venue, address) => {
@@ -279,9 +288,18 @@ export class Teams extends Component {
     // );
     // this.getLatLng("Stamford Bridge", "Fulham Road")
 
-    if (!this.props.loaded) return <div> Loading...</div>;
+    if (!this.props.loaded) return <Spinner
+      as="span"
+      animation="border"
+      size="sm"
+      role="status"
+      aria-hidden="true"
+    />;
+
+
+
     return (
-      <div className="map-container">
+      <div className="map-container" style={{paddingTop: '3em'}}>
         <Map
           google={this.props.google}
           zoom={14}
@@ -322,7 +340,7 @@ export class Teams extends Component {
               <h7> {this.state.selectedPlace.venue_addres}</h7>
               <br></br>
               <br></br>
-              <Button variant="dark" size="sm" block> view club </Button>
+              <Button variant="dark" size="sm" block> view club </Button> 
             </div>
           </InfoWindow>
 

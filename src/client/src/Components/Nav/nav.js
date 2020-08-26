@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavDropdow, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 
 
 const navStyle = {
@@ -15,33 +16,29 @@ class Navigation extends React.Component {
         super(props);
     }
     render() {
+        const navbar = { backgroundColor: 'rgb(56, 0, 60)' };
+
         return (
             <div>
-                <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
+                <Navbar collapseOnSelect expand="sm" style={navbar} variant="dark" >
                     <Navbar.Brand href="#home">
-                        <img
-                            alt=""
-                            src="../../logo512.png"
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top"
-                        />{' '}
-      FootyRoom
-      </Navbar.Brand>
+                        <SportsSoccerIcon style={{ display: "inline-block", verticalAlign: "top", color: "rgba(215,33, 116)" }}> </SportsSoccerIcon>
+                        <span style={{ fontSize: "1.35em" }}> FootyRoom </span>
+                    </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto" >
-                            <LinkContainer to="/" exact activeClassName="active" style={navStyle} activeStyle={{ borderBottom: "1px solid #fff" }} >
-                                <NavItem > FIXTURES </NavItem>
+                            <LinkContainer to="/" exact activeClassName="active" style={navStyle} activeStyle={{ borderBottom: "1px solid rgb(215,33, 116)", }} >
+                                <NavItem > <span style={{ fontSize: "1em" }}> FIXTURES </span> </NavItem>
                             </LinkContainer>
-                            <LinkContainer to="/standings" style={navStyle} activeStyle={{ borderBottom: "1px solid #fff" }}>
-                                <NavItem > STANDINGS </NavItem>
+                            <LinkContainer to="/standings" style={navStyle} activeStyle={{ borderBottom: "1px solid rgb(215,33, 116)" }}>
+                                <NavItem > <span style={{ fontSize: "1em" }}> STANDINGS </span>  </NavItem>
                             </LinkContainer>
-                            <LinkContainer to="/stats" style={navStyle} activeStyle={{ borderBottom: "1px solid #fff" }} >
-                                <NavItem > STATS </NavItem>
+                            <LinkContainer to="/stats" style={navStyle} activeStyle={{ borderBottom: "1px solid rgb(215,33, 116)" }} >
+                                <NavItem > <span style={{ fontSize: "1em" }}> STATS </span>  </NavItem>
                             </LinkContainer>
-                            <LinkContainer to="/teams" style={navStyle} activeStyle={{ borderBottom: "1px solid #fff" }}>
-                                <NavItem > TEAMS </NavItem>
+                            <LinkContainer to="/teams" style={navStyle} activeStyle={{ borderBottom: "1px solid rgb(215,33, 116)" }}>
+                                <NavItem > <span style={{ fontSize: "1em" }}> TEAMS </span>  </NavItem>
                             </LinkContainer>
 
                             {/* <NavItem componentclass="span" > <Link to="/fixtures" style={navStyle}> fixtures</Link></NavItem>

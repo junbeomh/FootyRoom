@@ -10,6 +10,9 @@ import Paper from '@material-ui/core/Paper';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
+import Spinner from 'react-bootstrap/Spinner'
+import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
+
 import {
     getLeagueStandings,
     getTeamsStandingData
@@ -50,8 +53,9 @@ export class Standings extends React.Component {
         const drawGameStyle = { width: "20px", height: "20px", color: "rgb(154, 160, 166) " };
         const looseGameStyle = { width: "20px", height: "20px", color: "rgb(234, 68, 53)" };
 
+
         return (
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} style={{padding: "2em"}}>
                 <Table stickyHeader size="small" aria-label="collapsible  table" >
                     <TableHead>
                         <TableRow hover>
@@ -103,7 +107,7 @@ export class Standings extends React.Component {
                                         {row.forme.split("").map(character =>
                                             character == "W" ? <CheckCircleRoundedIcon style={winGameStyle}> </CheckCircleRoundedIcon> :
                                                 character == "D" ? <RemoveCircleRoundedIcon style={drawGameStyle} > </RemoveCircleRoundedIcon> :
-                                                    character == "L" ? <CancelRoundedIcon style={looseGameStyle} > </CancelRoundedIcon>  :
+                                                    character == "L" ? <CancelRoundedIcon style={looseGameStyle} > </CancelRoundedIcon> :
                                                         <span> Nothing </span>)}
                                     </div>
                                 </TableCell>
