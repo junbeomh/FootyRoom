@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import Spinner from 'react-bootstrap/Spinner'
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
 
@@ -42,6 +43,7 @@ export class Standings extends React.Component {
         }
     }
 
+
     render() {
         const { classes } = this.props;
         const columnStyle = { width: '0.0 1%', };
@@ -55,7 +57,7 @@ export class Standings extends React.Component {
 
 
         return (
-            <TableContainer component={Paper} style={{padding: "2em"}}>
+            <TableContainer component={Paper} style={{ padding: "2em" }}>
                 <Table stickyHeader size="small" aria-label="collapsible  table" >
                     <TableHead>
                         <TableRow hover>
@@ -85,13 +87,15 @@ export class Standings extends React.Component {
                                                     row.rank >= 18 ? relegStatus : columnStyle}></TableCell>
                                 <TableCell onClick={this.handleClick(row.name)} component="th" scope="row" align="left" >
                                     <div>
-                                        <span>  {row.rank} </span>
+                                        <b>  {row.rank} </b>
                                         <img
                                             alt="Away"
                                             src={row.logo}
                                             style={{ height: "30px", width: "30px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
                                         />
-                                        <span>  {row.name} </span>
+                                        <b>  {row.name.includes("Manchester") ? row.name.replace("Manchester", "Man") :
+                                            row.name
+                                        } </b>
                                     </div>
                                 </TableCell>
                                 <TableCell onClick={this.handleClick(row.name)} align="right" style={columnStyle}>{row.data.matchsPlayed}</TableCell>
@@ -104,11 +108,18 @@ export class Standings extends React.Component {
                                 <TableCell onClick={this.handleClick(row.name)} align="right" style={columnStyle}>{row.pts}</TableCell>
                                 <TableCell>
                                     <div className="box">
-                                        {row.forme.split("").map(character =>
-                                            character == "W" ? <CheckCircleRoundedIcon style={winGameStyle}> </CheckCircleRoundedIcon> :
-                                                character == "D" ? <RemoveCircleRoundedIcon style={drawGameStyle} > </RemoveCircleRoundedIcon> :
-                                                    character == "L" ? <CancelRoundedIcon style={looseGameStyle} > </CancelRoundedIcon> :
-                                                        <span> Nothing </span>)}
+                                        {
+                                                !row.forme ? row.forme = "XXXXX":
+                                                row.forme.length == 1 ? row.forme += "XXXX":
+                                                row.forme.length == 2 ? row.forme += "XXX":
+                                                row.forme.length == 3 ? row.forme += "XX":
+                                                row.forme.length == 4 ? row.forme += "X":
+                                                row.forme.split("").map(character =>
+                                                    character == "W" ? <CheckCircleRoundedIcon style={winGameStyle}> </CheckCircleRoundedIcon> :
+                                                        character == "D" ? <RemoveCircleRoundedIcon style={drawGameStyle} > </RemoveCircleRoundedIcon> :
+                                                            character == "L" ? <CancelRoundedIcon style={looseGameStyle} > </CancelRoundedIcon> :
+                                                                <RadioButtonUncheckedIcon style={{color: "grey"}}> </RadioButtonUncheckedIcon>)
+                                        }
                                     </div>
                                 </TableCell>
 

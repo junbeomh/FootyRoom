@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import countries from 'i18n-iso-countries';
+import ReactCountryFlag from "react-country-flag";
+import Flag from 'react-world-flags'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,153 +11,180 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {
-    getLeagueStandings,
-    getTeamsStandingData
+    getTopScorersAPI,
 } from "../../../api"
-import SportsSoccerTwoToneIcon from '@material-ui/icons/SportsSoccerTwoTone';
-import PanToolTwoToneIcon from '@material-ui/icons/PanToolTwoTone';
-import SportsKabaddiTwoToneIcon from '@material-ui/icons/SportsKabaddiTwoTone';
+import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-const useStyles = makeStyles({
-    table: {
-        maxWidth: 300,
+const useRowStyles = makeStyles({
+    root: {
+        '& > *': {
+            borderBottom: 'unset',
+        },
     },
 });
 
+// Row.propTypes = {
+//     row: PropTypes.shape({
+//         calories: PropTypes.number.isRequired,
+//         carbs: PropTypes.number.isRequired,
+//         fat: PropTypes.number.isRequired,
+//         history: PropTypes.arrayOf(
+//             PropTypes.shape({
+//                 amount: PropTypes.number.isRequired,
+//                 customerId: PropTypes.string.isRequired,
+//                 date: PropTypes.string.isRequired,
+//             }),
+//         ).isRequired,
+//         name: PropTypes.string.isRequired,
+//         price: PropTypes.number.isRequired,
+//         protein: PropTypes.number.isRequired,
+//     }).isRequired,
+// };
 
-function createData(name, stat) {
-    return { name, stat };
-}
-const rows = [
-    createData('Raheem Sterling', 38),
-    createData('Messi', 38,),
-    createData('Dybala', 38,),
-    createData('Werner', 38),
-    createData('Kai Havertz', 38,),
-];
-
-class Stats extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rows: []
-        };
-    }
-
-    // async componentWillMount() {
-    //     const leagueStandings = await getLeagueStandings();
-    //     console.log(leagueStandings.data.api.standings);
-    //     this.setState({
-    //         rows: getTeamsStandingData(leagueStandings.data.api.standings["0"]),
-    //     })
-    //     console.log(this.state.rows);
-    // }
-
-    render() {
-        const { classes } = this.props;
-
-        const styles = {
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignContent: "center",
-            backgroundColor: "#fff",
-            color: "#000",
-            overflowY: "scroll",
-            paddingTop: "2em",
-            textAlign: "center"
-          };
-
-          const styles2 = {
-          };
-
-
-        return (
-            <div style={styles}>
-                <br></br>
-                <div>
-                    <span> Most Goals </span>
-                    <SportsSoccerTwoToneIcon> </SportsSoccerTwoToneIcon>
-                </div>
-                <div>
-                    <TableContainer component={Paper} style={{styles2} }>
-                        <Table size="small" aria-label="a dense table" >
-                            <TableHead>
-                                <TableRow> 
-                                    <TableCell>Player</TableCell>
-                                    <TableCell align="right">Goals</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow>
-                                        <TableCell component="th" scope="row">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right">{row.stat}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-                <br></br>
-                <div>
-                    <span> Most Assist </span>
-                    <SportsKabaddiTwoToneIcon> </SportsKabaddiTwoToneIcon>
-                </div>
-                <div>
-                    <TableContainer component={Paper}  >
-                        <Table size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Player</TableCell>
-                                    <TableCell>Goals</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow>
-                                        <TableCell component="th" scope="row">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right">{row.stat}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-                <br></br>
-                <div>
-                    <span> Most Clean Sheets </span>
-                    <PanToolTwoToneIcon> </PanToolTwoToneIcon>
-                </div>
-                <div>
-                    <TableContainer component={Paper} >
-                        <Table size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Player</TableCell>
-                                    <TableCell>Goals</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow>
-                                        <TableCell component="th" scope="row">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right">{row.stat}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </div>
-        );
-    }
+function createData(name, calories, fat, carbs, protein, price) {
+    return {
+        name,
+        calories,
+        fat,
+        carbs,
+        protein,
+        price,
+        history: [
+            { date: '2020-01-05', customerId: '11091700', amount: 3 },
+            { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+        ],
+    };
 }
 
-export default Stats;
+function Row(props) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+    const classes = useRowStyles();
+    countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
+    // console.log(
+    //     "South Korea => " +
+    //     countries.getAlpha2Code("South Korea", "en")
+    // );
+    return (
+        <React.Fragment>
+            <TableRow align="center" className={classes.root}>
+                <TableCell>
+                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                        {props.index + 1}
+                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                    {row.firstName + " " + row.lastName}
+                </TableCell>
+                <TableCell align="center">{row.position}</TableCell>
+                <TableCell align="center">{row.teamName.includes("Manchester") ? row.teamName.replace("Manchester", "Man") :
+                    row.teamName}</TableCell>
+                <TableCell align="center"><Flag  fallback={<span>{row.nationality}</span>} code={countries.getAlpha3Code(row.nationality == "England" ? "United Kingdom": row.nationality == "Korea Republic" ? "South Korea": row.nationality, "en")} /></TableCell>
+                {/* <TableCell align="center">{row.stat.assist}</TableCell> */}
+                <TableCell align="center"> <b> {row.stat.goal} </b></TableCell>
+
+            </TableRow>
+
+            {/* {expandable contents} */}
+            <TableRow align="center" style={{backgroundColor: "rgba(215,33, 116, 0.05)"}}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box margin={4}>
+                            <Typography variant="h6" gutterBottom component="div">
+                                <h6> Details </h6>
+                            </Typography>
+                            <Table align="center" size="small" aria-label="purchases">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Games played</TableCell>
+                                        <TableCell>Mins Played</TableCell>
+                                        <TableCell>Total Shots</TableCell>
+                                        <TableCell>Goals per 90</TableCell>
+                                        <TableCell>Mins per Goal</TableCell>
+                                        <TableCell>Goal conversion</TableCell>
+                                        <TableCell>Shot Accuracy</TableCell>
+
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow key={row.name}>
+                                        <TableCell component="th" scope="row">
+                                            {1}
+                                        </TableCell>
+                                        <TableCell>{2}</TableCell>
+                                        <TableCell>{3}</TableCell>
+                                        <TableCell> {4} </TableCell>
+                                        <TableCell>{5}</TableCell>
+                                        <TableCell>{6}</TableCell>
+                                        <TableCell>{7}</TableCell>
+
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+            {/* {expandable contents} */}
+
+        </React.Fragment>
+    );
+}
+
+export default function CollapsibleTable() {
+    const [data, setData] = React.useState([])
+    useEffect(() => {
+        getTopScorersAPI().then((response) => setData(response));
+    }, []);
+    console.log(data)
+    return (
+        <div style={{
+            display: "internal",
+
+        }}>
+            {/* <div>
+                <SportsSoccerTwoToneIcon> </SportsSoccerTwoToneIcon>
+                <span> Most Goals </span>
+
+            </div> */}
+            <TableContainer component={Paper}
+                style={{
+                    padding: "2em",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    marginTop: "1em",
+                    paddingLeft: '7em',
+                    paddingRight: '7em'
+
+                }}>
+                <Table aria-label="collapsible table" >
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>  Rank </TableCell>
+                            <TableCell> Player</TableCell>
+                            <TableCell align="center"> Position</TableCell>
+                            <TableCell align="center"> Club </TableCell>
+                            <TableCell align="center"> Nationality </TableCell>
+                            {/* <TableCell> Assists </TableCell> */}
+                            <TableCell align="center"> Goals</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row, index) => (
+                            <Row key={row.name} row={row} index={index} />
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
+    );
+}

@@ -75,12 +75,14 @@ class LineUp extends React.Component {
 
     render() {
         return (
-            <SoccerLineUp
-                size={"responsive"}
-                color={"#588f58"}
-                pattern={"lines"}
-                homeTeam={this.buildHomeTeam()}
-                awayTeam={this.buildAwayTeam()} />
+            <div style={{marginLeft: "10em", paddingTop: "2em", paddingBottom: "2em"}}>
+                <SoccerLineUp
+                    size={"small"}
+                    color={"#588f58"}
+                    pattern={"lines"}
+                    homeTeam={this.buildHomeTeam()}
+                    awayTeam={this.buildAwayTeam()} />
+            </div>
         );
     }
 }

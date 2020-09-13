@@ -3,12 +3,16 @@ import { Grid, Card, Icon, Image, Button } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
+import {
+    getRoundFixtures,
+} from "../../../api"
 
 class FixtureCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             redirect: false,
+            index: this.props.index,
             matchDay: this.props.matchDay,
             fixtures: [
                 {
@@ -142,6 +146,14 @@ class FixtureCard extends React.Component {
         }
     }
 
+    async componentDidMount() {
+        // const roundFixtures = await getRoundFixtures(this.props.matchDay);
+        // console.log(roundFixtures);
+        // this.setState({
+        //     fixtures: roundFixtures
+
+        // })
+    }
 
 
     handleClick = (fixture) => {
@@ -212,7 +224,7 @@ class FixtureCard extends React.Component {
                                     color: 'orange'
                                 }
                             }}
-                            style={{ marginLeft: "1em", marginBottom:"" }}
+                            style={{ marginLeft: "1em", marginBottom: "" }}
                             percent={50} />
 
                     </Card>
@@ -244,7 +256,7 @@ class FixtureCard extends React.Component {
                 paddingRight: '11em',
                 paddingTop: '2em',
                 paddingBottom: '4em',
-                backgroundColor: 'rgba(40, 40, 40, 0.1)',
+                backgroundColor: 'rgba(215,33, 116, 0.5)',
                 display: "absolute",
                 justifyContent: "space-around",
                 alignItems: "center",
@@ -254,7 +266,7 @@ class FixtureCard extends React.Component {
 
         return (
             <div style={styles.mainContainer}>
-                <h3 style={{ marginBottom: "2em" }}> Matchday {this.state.matchDay} of 38 </h3>
+                <h3 style={{ marginBottom: "2em" }}> Matchday {this.state.index + 1} of 38 </h3>
                 <Grid columns={'two'} >
                     <Grid.Row style={styles.containerStyle}>
                         {this.renderItems()}

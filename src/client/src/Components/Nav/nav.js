@@ -23,7 +23,8 @@ class Navigation extends React.Component {
                 <Navbar collapseOnSelect expand="sm" style={navbar} variant="dark" >
                     <Navbar.Brand href="#home">
                         <SportsSoccerIcon style={{ display: "inline-block", verticalAlign: "top", color: "rgba(215,33, 116)" }}> </SportsSoccerIcon>
-                        <span style={{ fontSize: "1.35em" }}> FootyRoom </span>
+                        <span style={{ fontSize: "1.35em" }}> footyRoom </span>
+
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">

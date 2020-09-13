@@ -1,22 +1,66 @@
 import React, { Component } from 'react';
 import Card from "react-bootstrap/Card";
 import { DropdownButton, MenuItem } from 'react-bootstrap'
-import FixtureCard from "./matchday"
-// import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
+import FixtureCard from "./matchDay"
 import Carousel from 'react-bootstrap/Carousel'
+import {
+  getAllRounds,
+} from "../../../api"
 class Fixtures extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fixtures: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+      // rounds: []
+      rounds: [
+        "Regular_Season_-_1",
+        "Regular_Season_-_2",
+        "Regular_Season_-_3",
+        "Regular_Season_-_4",
+        "Regular_Season_-_5",
+        "Regular_Season_-_6",
+        "Regular_Season_-_7",
+        "Regular_Season_-_8",
+        "Regular_Season_-_9",
+        "Regular_Season_-_10",
+        "Regular_Season_-_11",
+        "Regular_Season_-_12",
+        "Regular_Season_-_13",
+        "Regular_Season_-_14",
+        "Regular_Season_-_15",
+        "Regular_Season_-_16",
+        "Regular_Season_-_17",
+        "Regular_Season_-_18",
+        "Regular_Season_-_19",
+        "Regular_Season_-_20",
+        "Regular_Season_-_21",
+        "Regular_Season_-_22",
+        "Regular_Season_-_23",
+        "Regular_Season_-_24",
+        "Regular_Season_-_25",
+        "Regular_Season_-_26",
+        "Regular_Season_-_27",
+        "Regular_Season_-_28",
+        "Regular_Season_-_29",
+        "Regular_Season_-_30",
+        "Regular_Season_-_31",
+        "Regular_Season_-_32",
+        "Regular_Season_-_33",
+        "Regular_Season_-_34",
+        "Regular_Season_-_35",
+        "Regular_Season_-_36",
+        "Regular_Season_-_37",
+        "Regular_Season_-_38"
+      ]
     }
   }
 
-  async componentWillMount() {
-    //https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/524 GET ALL AVAILABLE ROUNDS
-  }
+  // async componentDidMount() {
+  //   const allRounds = await getAllRounds();
+  //   console.log(allRounds);
+  //   this.setState({
+  //     rounds: allRounds
+  //   })
+  // }
 
   renderItems() {
     // for (var i = 0; i < this.state.fixtures.length; i++) {
@@ -35,9 +79,9 @@ class Fixtures extends React.Component {
       textAlign: "center"
     };
     return (
-      this.state.fixtures.map(index =>
-        <Carousel.Item>
-          <FixtureCard matchDay={index} key={index}>
+      this.state.rounds.map((round, index) =>
+        <Carousel.Item key={index}>
+          <FixtureCard matchDay={round} key={index} index={index}>
           </FixtureCard>
         </Carousel.Item>)
     );
@@ -62,7 +106,7 @@ class Fixtures extends React.Component {
         <Carousel
           defaultActiveIndex={1}
           interval={null}
-          prevIcon={<span aria-hidden="false" className="carousel-control-prev-icon" style={{ outlineColor: "black"}} />}
+          prevIcon={<span aria-hidden="false" className="carousel-control-prev-icon" style={{ outlineColor: "black" }} />}
           nextIcon={<span aria-hidden="false" className="carousel-control-next-icon" style={{ outlineColor: "black" }} />}>
           {this.renderItems()}
         </Carousel>

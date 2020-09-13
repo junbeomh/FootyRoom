@@ -113,20 +113,20 @@ class Fixture extends React.Component {
                             src={this.state.fixture.homeLogo}
                             style={{ height: "80px", width: "80px", marginTop: "1em" }}
                         /> */}
-                        <Segment basic>
-                            <Image src={this.state.fixture.homeLogo} style={{ height: "60px", width: "60px", marginTop: "2em"}} centered />
-                            <b style={{fontSize: "1em", }}> CHELSEA </b>
+                        <Segment basic >
+                            <Image src={this.state.fixture.homeLogo} style={{ height: "80px", width: "80px", marginTop: "1em" }} centered />
+                            <b style={{ fontSize: "1.25em", }}> CHELSEA </b>
                         </Segment>
-                        <div style={{ display: "inline-block",  marginTop: "1.5em" }}>
+                        <div style={{ display: "inline-block", marginTop: "1em" }}>
                             <span className="" style={{ fontSize: "3em", }}> {this.state.fixture.homeScore} </span>
                             {/* <span className="" style={{ fontSize: "1.25em", marginLeft: "1.25em", marginRight: "1.25em", color: "rgb(0, 0, 0, 0.7)"}}> FT </span> */}
                             <span className="" style={{ display: "inline-block", verticalAlign: "top", fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "green" }}> 45' </span>
                             {/* <span className="" style={{ fontSize: "1.25em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> VS </span> */}
                             <span className="" style={{ fontSize: "3em", }}> {this.state.fixture.awayScore} </span>
                         </div>
-                        <Segment basic>
-                            <Image src={this.state.fixture.awayLogo} style={{ height: "60px", width: "60px" }}  centered />
-                            <b style={{fontSize: "1em", }}> NORWICH </b>
+                        <Segment basic style={{ marginBottom: "1em" }}>
+                            <Image src={this.state.fixture.awayLogo} style={{ height: "80px", width: "80px", }} centered />
+                            <b style={{ fontSize: "1.25em", }}> NORWICH </b>
                         </Segment>
                         {/* <img
                             alt="Away"
@@ -135,10 +135,10 @@ class Fixture extends React.Component {
                         /> */}
                     </div>
 
-                    <Divider section />
+                    <Divider section style={{ marginTop: "2.5em" }} />
                 </Segment>
 
-                <Tab defaultIndex={2} panes={panes} />
+                <Tab defaultindex={2} panes={panes} />
 
             </Paper >
         )
