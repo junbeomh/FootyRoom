@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './client/src/styles/index.css';
-import App from './client/src/App';
+import './client/styles/index.css';
+import App from './client/App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter as Router, Route } from 'react-router';
 import 'bootstrap/dist/css/bootstrap.min.css';
