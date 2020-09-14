@@ -1,5 +1,4 @@
 import axios from "axios";
-import Geocode from 'react-geocode';
 
 // API-FOOTBALL beta version:
 // key: 02c73d826723d3e02b2f338e71363d62
@@ -14,7 +13,7 @@ export const getAllRounds = async () => {
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
                 'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
             }
-        }).then((response)=> response.data.api.fixtures)
+        }).then((response) => response.data.api.fixtures)
 
     } catch (e) {
         console.log(e);
@@ -24,6 +23,7 @@ export const getAllRounds = async () => {
 
 // League Fixtures
 export const getRoundFixtures = async (round) => {
+    console.log('Fetching data for ' + round);
     try {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/' + round, {
             headers:
@@ -31,19 +31,13 @@ export const getRoundFixtures = async (round) => {
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
                 'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
             }
-        }).then((fixtures) => getFixturesData(fixtures.data.api.fixtures))
+        }).then((response) => getFixturesData(response.data.api.fixtures))
 
     } catch (e) {
         console.log(e);
     }
     return null;
 }
-
-export const getTeamData = (game, key) => ({
-    name: game[key]['team_name'],
-    teamId: game[key]['team_id'],
-    logo: game[key]['logo'],
-});
 
 export const getFixturesData = games =>
     games.map(game => ({
@@ -53,8 +47,25 @@ export const getFixturesData = games =>
         goalsAway: game['goalsAwayTeam'],
         referee: game['referee'],
         stadium: game['venue'],
-        id: game['fixture_id']
+        id: game['fixture_id'],
+        date: game['event_date'],
+        referee: game['referee'],
+        round: game['round'],
+        status: game['statusShort'],
+        statusLong: game['status'],
+        venue: game['venue'],
+        elapsed: game['elapsed'],
+        timeStamp: game['event_timestamp'],
+        firstHalfStart: game['firstHalfStart'],
+        secondHalfStart: game['SecondHalfStart']
     }));
+
+export const getTeamData = (game, key) => ({
+    name: game[key]['team_name'],
+    teamId: game[key]['team_id'],
+    logo: game[key]['logo'],
+});
+
 
 // League Standing
 export const getLeagueStandings = async () => {
@@ -65,24 +76,13 @@ export const getLeagueStandings = async () => {
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
                 'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
             }
-        })
+        }).then((response) => getTeamsStandingData(response.data.api.standings["0"]))
 
     } catch (e) {
         console.log(e);
     }
     return null;
 }
-
-export const getTeamStandingData = (team, key) => ({
-    matchsPlayed: team[key]['matchsPlayed'],
-    win: team[key]['win'],
-    draw: team[key]['draw'],
-    lose: team[key]['lose'],
-    goalsFor: team[key]['goalsFor'],
-    goalsAgainst: team[key]['goalsAgainst'],
-});
-
-
 
 export const getTeamsStandingData = teams =>
     teams.map(team => ({
@@ -95,6 +95,17 @@ export const getTeamsStandingData = teams =>
         logo: team['logo'],
         forme: team['forme']
     }));
+
+
+export const getTeamStandingData = (team, key) => ({
+    matchsPlayed: team[key]['matchsPlayed'],
+    win: team[key]['win'],
+    draw: team[key]['draw'],
+    lose: team[key]['lose'],
+    goalsFor: team[key]['goalsFor'],
+    goalsAgainst: team[key]['goalsAgainst'],
+});
+
 
 
 

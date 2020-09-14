@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Card, Icon, Image, Button } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { Progress } from 'react-sweet-progress';
+import Spinner from 'react-bootstrap/Spinner';
 import "react-sweet-progress/lib/style.css";
 import {
     getRoundFixtures,
@@ -14,145 +15,21 @@ class FixtureCard extends React.Component {
             redirect: false,
             index: this.props.index,
             matchDay: this.props.matchDay,
-            fixtures: [
-                {
-                    date: "2020/07/14",
-                    homeLogo: "https://media.api-sports.io/football/teams/49.png",
-                    homeName: "Chelsea",
-                    homeScore: "1",
-                    awayLogo: "https://media.api-sports.io/football/teams/71.png",
-                    awayName: "Norwich City",
-                    awayScore: "0",
-                    isFinished: false,
-                    isStarted: false
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/44.png",
-                    homeName: "Burnley",
-                    homeScore: "1",
-                    awayLogo: "https://media.api-sports.io/football/teams/39.png",
-                    awayName: "Wolves",
-                    awayScore: "1",
-                    isFinished: false,
-                    isStarted: true
-
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/50.png",
-                    homeName: "Man. City",
-                    homeScore: "2",
-                    awayLogo: "https://media.api-sports.io/football/teams/35.png",
-                    awayName: "Bournemouth",
-                    awayScore: "1",
-                    isFinished: true,
-                    isStarted: true
-
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/34.png",
-                    homeName: "Newcastle",
-                    homeScore: "1",
-                    awayLogo: "https://media.api-sports.io/football/teams/47.png",
-                    awayName: "Tottenham",
-                    awayScore: "3",
-                    isFinished: true,
-                    isStarted: true
-
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/42.png",
-                    homeName: "Arsenal",
-                    homeScore: "2",
-                    awayLogo: "https://media.api-sports.io/football/teams/40.png",
-                    awayName: "Liverpool",
-                    awayScore: "1",
-                    isFinished: true,
-                    isStarted: true
-
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/45.png",
-                    homeName: "Everton",
-                    homeScore: "1",
-                    awayLogo: "https://media.api-sports.io/football/teams/66.png",
-                    awayName: "Aston Villa",
-                    awayScore: "1",
-                    isFinished: true,
-                    isStarted: true
-
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/46.png",
-                    homeName: "Leicester City",
-                    homeScore: "2",
-                    awayLogo: "https://media.api-sports.io/football/teams/62.png",
-                    awayName: "Sheffield United",
-                    awayScore: "0",
-                    isFinished: true,
-                    isStarted: true
-
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/41.png",
-                    homeName: "Southhampton",
-                    homeScore: "1",
-                    awayLogo: "https://media.api-sports.io/football/teams/51.png",
-                    awayName: "Brighton",
-                    awayScore: "1",
-                    isFinished: true,
-                    isStarted: true
-
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/52.png",
-                    homeName: "Crystal Palace",
-                    homeScore: "0",
-                    awayLogo: "https://media.api-sports.io/football/teams/33.png",
-                    awayName: "Man. United",
-                    awayScore: "2",
-                    isFinished: true,
-                    isStarted: true
-
-                },
-                {
-                    date: "2020/07/15",
-                    homeLogo: "https://media.api-sports.io/football/teams/48.png",
-                    homeName: "West Ham",
-                    homeScore: "3",
-                    awayLogo: "https://media.api-sports.io/football/teams/38.png",
-                    awayName: "Watford",
-                    awayScore: "1",
-                    isFinished: true,
-                    isStarted: true
-
-                },
-            ]
+            isLoading: true,
+            fixtures: []
         }
     }
 
     async componentDidMount() {
-        // const roundFixtures = await getRoundFixtures(this.props.matchDay);
-        // console.log(roundFixtures);
-        // this.setState({
-        //     fixtures: roundFixtures
-
-        // })
+        console.log("START CDM " + this.state.matchDay)
+        const roundFixtures = await getRoundFixtures(this.props.matchDay);
+        Promise.all([roundFixtures]).then((response) => {
+            this.setState({
+                fixtures: roundFixtures,
+                isLoading: false
+            });
+        })
+        console.log("END CDM " + this.state.matchDay)
     }
 
 
@@ -164,12 +41,12 @@ class FixtureCard extends React.Component {
     }
 
     renderItems() {
+        console.log(this.state.fixtures);
         const cardStyle = {
             width: '20em',
             marginBottom: "2em",
             marginTop: "0.5em"
         }
-
         const fixtureStyle = {
             display: "flex",
             flexDirection: "row",
@@ -181,30 +58,56 @@ class FixtureCard extends React.Component {
             height: "3em",
             color: "black",
         }
+        const timestampOffset = 28800;
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
         return this.state.fixtures.map((fixture, index) => (
             <Grid.Column key={index}>
                 <Card.Group itemsPerRow={2} onClick={this.handleClick(fixture)}>
                     <Card style={cardStyle}>
-                        <Card.Content header={fixture.date} style={{ fontSize: "0.75em", fontStyle: "italic", justifyContent: "space-around", alignItems: "center", }} />
+
+                        <Card.Content header={
+                            months[new Date((fixture.timeStamp - timestampOffset) * 1000).getMonth()] + "."
+                            + new Date((fixture.timeStamp - timestampOffset) * 1000).getDate() + " "
+                            + new Date((fixture.timeStamp - timestampOffset) * 1000).getFullYear() + ", "
+                            + new Date((fixture.timeStamp) * 1000).getHours() + ":"
+                            + ("0" + new Date((fixture.timeStamp - timestampOffset) * 1000).getMinutes()).substr(-2) + " PST"
+                            + "  -  " + fixture.statusLong
+                        } style={{ fontSize: "0.75em", justifyContent: "space-around", alignItems: "center", }} />
+
                         <div style={fixtureStyle}>
                             <img
                                 alt="Home"
-                                src={fixture.homeLogo}
+                                src={fixture.homeTeam.logo}
                                 style={{ height: "50px", width: "50px", marginTop: "1em" }}
                             />
                             <div style={{ display: "inline-block", verticalAlign: "top", marginTop: "1.5em" }}>
-                                <span className="" style={{ fontSize: "1.5em", marginLeft: "0.5em" }}> {fixture.homeScore} </span>
-                                {/* <span className="" style={{ fontSize: "1.25em", marginLeft: "1.25em", marginRight: "1.25em", color: "rgb(0, 0, 0, 0.7)"}}> FT </span> */}
-                                <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> 45' </span>
-                                {/* <span className="" style={{ fontSize: "1.25em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> VS </span> */}
+                                <span className="" style={{ fontSize: "1.5em", marginLeft: "0.5em" }}> {fixture.goalsHome} </span>
 
-                                <span className="" style={{ fontSize: "1.5em", marginRight: "0.5em" }}> {fixture.awayScore} </span>
+                                {/*
+                                TBD : Time To Be Defined
+                                NS : Not Started
+                                1H : First Half, Kick Off
+                                HT : Halftime
+                                2H : Second Half, 2nd Half Started
+                                ET : Extra Time
+                                P : Penalty In Progress
+                                FT : Match Finished
+                                PST: Match Postponed */}
+                                {
+                                    fixture.status == "FT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "rgb(56, 0, 60)" }}> FT </span> :
+                                        fixture.status == "NS" || "TBD" || "PST" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "black" }}> VS </span> :
+                                            fixture.status == "HT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "orange" }}> HT </span> :
+                                                fixture.status == "1H" || "2H" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> {fixture.elapsed + "'"} </span> :
+                                                    <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> </span>
+                                }
 
+
+                                <span className="" style={{ fontSize: "1.5em", marginRight: "0.5em" }}> {fixture.goalsAway} </span>
                             </div>
                             <img
                                 alt="Away"
-                                src={fixture.awayLogo}
+                                src={fixture.awayTeam['logo']}
                                 style={{ height: "50px", width: "50px", marginTop: "1em" }}
                             />
                         </div>
@@ -212,7 +115,7 @@ class FixtureCard extends React.Component {
                             theme={{
                                 success: {
                                     symbol: '   ‍',
-                                    color: 'blue'
+                                    color: 'rgb(56, 0, 60)'
                                 },
                                 active: {
                                     symbol: '  ',
@@ -225,7 +128,7 @@ class FixtureCard extends React.Component {
                                 }
                             }}
                             style={{ marginLeft: "1em", marginBottom: "" }}
-                            percent={50} />
+                            percent={(fixture.elapsed / 90) * 100} />
 
                     </Card>
                 </Card.Group>
@@ -235,10 +138,7 @@ class FixtureCard extends React.Component {
 
 
     render() {
-        if (this.state.redirect) {
-            return <Redirect to='/fixture' />;
-        }
-
+        const { isLoading } = this.state;
         const styles = {
             mainContainer: {
                 flex: 1,
@@ -264,16 +164,30 @@ class FixtureCard extends React.Component {
             }
         }
 
-        return (
-            <div style={styles.mainContainer}>
-                <h3 style={{ marginBottom: "2em" }}> Matchday {this.state.index + 1} of 38 </h3>
-                <Grid columns={'two'} >
-                    <Grid.Row style={styles.containerStyle}>
-                        {this.renderItems()}
-                    </Grid.Row>
-                </Grid>
-            </div>
-        );
+        console.log("rendering " + this.state.matchDay)
+        if (this.state.redirect) {
+            return <Redirect to='/fixture' />;
+        }
+
+        if (isLoading)
+            return <Spinner
+                as="span"
+                animation="border"
+                size="xlg"
+                role="status"
+                aria-hidden="true"
+            />
+        else
+            return (
+                <div style={styles.mainContainer}>
+                    <h3 style={{ marginBottom: "2em" }}> Matchday {this.state.matchDay.replace("Regular_Season_-_", "")} of 38 </h3>
+                    <Grid columns={'two'} >
+                        <Grid.Row style={styles.containerStyle}>
+                            {this.renderItems()}
+                        </Grid.Row>
+                    </Grid>
+                </div>
+            );
     }
 }
 

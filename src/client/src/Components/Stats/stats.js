@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import countries from 'i18n-iso-countries';
 import ReactCountryFlag from "react-country-flag";
 import Flag from 'react-world-flags'
@@ -86,14 +87,14 @@ function Row(props) {
                 <TableCell align="center">{row.position}</TableCell>
                 <TableCell align="center">{row.teamName.includes("Manchester") ? row.teamName.replace("Manchester", "Man") :
                     row.teamName}</TableCell>
-                <TableCell align="center"><Flag  fallback={<span>{row.nationality}</span>} code={countries.getAlpha3Code(row.nationality == "England" ? "United Kingdom": row.nationality == "Korea Republic" ? "South Korea": row.nationality, "en")} /></TableCell>
+                <TableCell align="center"><Flag fallback={<span>{row.nationality}</span>} code={countries.getAlpha3Code(row.nationality == "England" ? "United Kingdom" : row.nationality == "Korea Republic" ? "South Korea" : row.nationality, "en")} /></TableCell>
                 {/* <TableCell align="center">{row.stat.assist}</TableCell> */}
                 <TableCell align="center"> <b> {row.stat.goal} </b></TableCell>
 
             </TableRow>
 
             {/* {expandable contents} */}
-            <TableRow align="center" style={{backgroundColor: "rgba(215,33, 116, 0.05)"}}>
+            <TableRow align="center" style={{ backgroundColor: "rgba(215,33, 116, 0.05)" }}>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={4}>
@@ -110,6 +111,7 @@ function Row(props) {
                                         <TableCell>Mins per Goal</TableCell>
                                         <TableCell>Goal conversion</TableCell>
                                         <TableCell>Shot Accuracy</TableCell>
+                                        <TableCell>Assists</TableCell>
 
                                     </TableRow>
                                 </TableHead>
@@ -124,6 +126,7 @@ function Row(props) {
                                         <TableCell>{5}</TableCell>
                                         <TableCell>{6}</TableCell>
                                         <TableCell>{7}</TableCell>
+                                        <TableCell>{8}</TableCell>
 
                                     </TableRow>
                                 </TableBody>
@@ -139,52 +142,60 @@ function Row(props) {
 }
 
 export default function CollapsibleTable() {
-    const [data, setData] = React.useState([])
+    const [data, setData] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    console.log("isLoading " + isLoading);
     useEffect(() => {
-        getTopScorersAPI().then((response) => setData(response));
+        getTopScorersAPI().then((response) => setData(response)).then(setIsLoading(false));
     }, []);
+    console.log("isLoading " + isLoading);
     console.log(data)
-    return (
-        <div style={{
-            display: "internal",
-
-        }}>
-            {/* <div>
+    console.log("rendering...")
+    if (isLoading)
+        return <Spinner
+            as="span"
+            animation="border"
+            size="xlg"
+            role="status"
+            aria-hidden="true"
+        />
+    else
+        return (
+            <div style={{ display: "internal" }}>
+                {/* <div>
                 <SportsSoccerTwoToneIcon> </SportsSoccerTwoToneIcon>
-                <span> Most Goals </span>
+                <span> Most Goals </span>  </div> */}
 
-            </div> */}
-            <TableContainer component={Paper}
-                style={{
-                    padding: "2em",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    marginTop: "1em",
-                    paddingLeft: '7em',
-                    paddingRight: '7em'
+                <TableContainer component={Paper}
+                    style={{
+                        padding: "2em",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        marginTop: "1em",
+                        paddingLeft: '5em',
+                        paddingRight: '5em'
 
-                }}>
-                <Table aria-label="collapsible table" >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>  Rank </TableCell>
-                            <TableCell> Player</TableCell>
-                            <TableCell align="center"> Position</TableCell>
-                            <TableCell align="center"> Club </TableCell>
-                            <TableCell align="center"> Nationality </TableCell>
-                            {/* <TableCell> Assists </TableCell> */}
-                            <TableCell align="center"> Goals</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.map((row, index) => (
-                            <Row key={row.name} row={row} index={index} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
-    );
+                    }}>
+                    <Table aria-label="collapsible table" >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>  Rank </TableCell>
+                                <TableCell> Player</TableCell>
+                                <TableCell align="center"> Position</TableCell>
+                                <TableCell align="center"> Club </TableCell>
+                                <TableCell align="center"> Nationality </TableCell>
+                                <TableCell align="center"> Goals</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {data.map((row, index) => (
+                                <Row key={row.name} row={row} index={index} />
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+        );
 }

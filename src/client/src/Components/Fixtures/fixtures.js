@@ -8,7 +8,7 @@ import {
 } from "../../../api"
 class Fixtures extends React.Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = {
       // rounds: []
       rounds: [
@@ -41,15 +41,15 @@ class Fixtures extends React.Component {
         "Regular_Season_-_27",
         "Regular_Season_-_28",
         "Regular_Season_-_29",
-        "Regular_Season_-_30",
-        "Regular_Season_-_31",
-        "Regular_Season_-_32",
-        "Regular_Season_-_33",
-        "Regular_Season_-_34",
-        "Regular_Season_-_35",
-        "Regular_Season_-_36",
-        "Regular_Season_-_37",
-        "Regular_Season_-_38"
+        // "Regular_Season_-_30",
+        // "Regular_Season_-_31",
+        // "Regular_Season_-_32",
+        // "Regular_Season_-_33",
+        // "Regular_Season_-_34",
+        // "Regular_Season_-_35",
+        // "Regular_Season_-_36",
+        // "Regular_Season_-_37",
+        // "Regular_Season_-_38"
       ]
     }
   }
@@ -81,7 +81,7 @@ class Fixtures extends React.Component {
     return (
       this.state.rounds.map((round, index) =>
         <Carousel.Item key={index}>
-          <FixtureCard matchDay={round} key={index} index={index}>
+          <FixtureCard key={index} matchDay={round} >
           </FixtureCard>
         </Carousel.Item>)
     );
@@ -95,7 +95,6 @@ class Fixtures extends React.Component {
       slidesToShow: 1,
       slidesToScroll: 1,
       initialSlide: 2,
-
     };
 
     return (
@@ -104,7 +103,7 @@ class Fixtures extends React.Component {
         marginBottom: '.75em',
       }}>
         <Carousel
-          defaultActiveIndex={1}
+          defaultActiveIndex={0}
           interval={null}
           prevIcon={<span aria-hidden="false" className="carousel-control-prev-icon" style={{ outlineColor: "black" }} />}
           nextIcon={<span aria-hidden="false" className="carousel-control-next-icon" style={{ outlineColor: "black" }} />}>
