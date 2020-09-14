@@ -72,7 +72,7 @@ class FixtureCard extends React.Component {
                             + new Date((fixture.timeStamp - timestampOffset) * 1000).getFullYear() + ", "
                             + new Date((fixture.timeStamp) * 1000).getHours() + ":"
                             + ("0" + new Date((fixture.timeStamp - timestampOffset) * 1000).getMinutes()).substr(-2) + " PST"
-                            + "  -  " + fixture.statusLong
+                            + "  -  " + (fixture.statusLong == "Time to be defined" ? "TBD": fixture.statusLong)
                         } style={{ fontSize: "0.75em", justifyContent: "space-around", alignItems: "center", }} />
 
                         <div style={fixtureStyle}>

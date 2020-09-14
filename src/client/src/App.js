@@ -5,15 +5,8 @@ import Fixtures from './Components/Fixtures/fixtures.js';
 import Standings from './Components/Standings/standings.js';
 import Stats from './Components/Stats/stats.js';
 import Teams from './Components/Teams/teams.js';
-
-
-import "./styles/index.css";
-import Games from "./Containers/Games";
-import {
-  getGameScores,
-  getFixturesData
-} from "../api"
 import Fixture from './Components/Match/match.js';
+import "./styles/index.css";
 
 
 class App extends React.Component {
@@ -25,17 +18,7 @@ class App extends React.Component {
     };
   }
 
-  // async componentWillMount() {
-  //   const gameScores = await getGameScores();
-  //   console.log(gameScores.data.api.fixtures); // all fixtures for that round 
-  //   this.setState({
-  //     games: getFixturesData(gameScores.data.api.fixtures),
-  //   })
-  //   console.log(this.state.games);
-  // }
-
   render() {
-
     const styles = {
       padding: '20px',
       width: '250px',
