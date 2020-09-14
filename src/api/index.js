@@ -21,7 +21,7 @@ export const getAllRounds = async () => {
     return null;
 }
 
-// League Fixtures
+// All avaiable fixtures of a round
 export const getRoundFixtures = async (round) => {
     console.log('Fetching data for ' + round);
     try {
@@ -66,6 +66,28 @@ export const getTeamData = (game, key) => ({
     logo: game[key]['logo'],
 });
 
+
+// a fixture information
+export const getFixture = async (fixtureId) => {
+    try {
+        return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/id/' + fixtureId, {
+            headers:
+            {
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
+                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+            }
+        })
+
+    } catch (e) {
+        console.log(e);
+    }
+    return null;
+}
+
+export const getFixtureData = fixture =>
+    fixture => ({
+        date: fixture['event_date']
+    });
 
 // League Standing
 export const getLeagueStandings = async () => {

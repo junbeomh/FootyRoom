@@ -12,7 +12,7 @@ export class TimeLine extends React.Component {
     render() {
         return (
             <Paper>
-                <VerticalTimeline>
+                {/* <VerticalTimeline>
                     <VerticalTimelineElement
                         position='left'
                         className="vertical-timeline-element--work"
@@ -44,7 +44,7 @@ export class TimeLine extends React.Component {
                     >
                         <h3 className="vertical-timeline-element-title">53' </h3>
                     </VerticalTimelineElement>
-                </VerticalTimeline>
+                </VerticalTimeline> */}
             </Paper>
         );
     }

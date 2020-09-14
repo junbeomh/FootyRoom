@@ -16,6 +16,7 @@ class FixtureCard extends React.Component {
             index: this.props.index,
             matchDay: this.props.matchDay,
             isLoading: true,
+            onClickId: null,
             fixtures: []
         }
     }
@@ -36,7 +37,7 @@ class FixtureCard extends React.Component {
     handleClick = (fixture) => {
         return (event) => {
             console.log(`Clicked ${fixture.homeName} vs. ${fixture.awayName} on ${fixture.date}`);
-            this.setState({ redirect: true });
+            this.setState({ onClickId: fixture.id, redirect: true });
         }
     }
 
@@ -60,7 +61,6 @@ class FixtureCard extends React.Component {
         }
         const timestampOffset = 28800;
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
         return this.state.fixtures.map((fixture, index) => (
             <Grid.Column key={index}>
                 <Card.Group itemsPerRow={2} onClick={this.handleClick(fixture)}>
@@ -72,7 +72,7 @@ class FixtureCard extends React.Component {
                             + new Date((fixture.timeStamp - timestampOffset) * 1000).getFullYear() + ", "
                             + new Date((fixture.timeStamp) * 1000).getHours() + ":"
                             + ("0" + new Date((fixture.timeStamp - timestampOffset) * 1000).getMinutes()).substr(-2) + " PST"
-                            + "  -  " + (fixture.statusLong == "Time to be defined" ? "TBD": fixture.statusLong)
+                            + "  -  " + (fixture.statusLong == "Time to be defined" ? "TBD" : fixture.statusLong)
                         } style={{ fontSize: "0.75em", justifyContent: "space-around", alignItems: "center", }} />
 
                         <div style={fixtureStyle}>
@@ -96,9 +96,9 @@ class FixtureCard extends React.Component {
                                 PST: Match Postponed */}
                                 {
                                     fixture.status == "FT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "rgb(56, 0, 60)" }}> FT </span> :
-                                        fixture.status == "NS" || "TBD" || "PST" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "black" }}> VS </span> :
-                                            fixture.status == "HT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "orange" }}> HT </span> :
-                                                fixture.status == "1H" || "2H" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> {fixture.elapsed + "'"} </span> :
+                                        fixture.status == "NS" || fixture.status == "TBD" || fixture.status == "PST" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "black" }}> VS </span> :
+                                            fixture.status == "HT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> HT </span> :
+                                                fixture.status == "1H" || fixture.status == "2H" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> {fixture.elapsed + "'"} </span> :
                                                     <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> </span>
                                 }
 
@@ -119,7 +119,7 @@ class FixtureCard extends React.Component {
                                 },
                                 active: {
                                     symbol: '  ',
-                                    color: 'green'
+                                    color: 'rgb(59, 167, 86)'
                                 },
 
                                 default: {
@@ -163,10 +163,10 @@ class FixtureCard extends React.Component {
 
             }
         }
-
         console.log("rendering " + this.state.matchDay)
         if (this.state.redirect) {
-            return <Redirect to='/fixture' />;
+
+            return <Redirect to={{ pathname: '/fixture', state: { matchId: this.state.onClickId } }} />;
         }
 
         if (isLoading)

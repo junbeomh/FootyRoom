@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import { Divider, Header, Image, Segment } from 'semantic-ui-react'
 import 'react-vertical-timeline-component/style.min.css';
-import Paper from '@material-ui/core/Paper';
 import { Tab } from 'semantic-ui-react'
 import TimeLine from './timeline';
 import LineUp from './lineup';
 import Stats from './stats';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import HomeIcon from '@material-ui/icons/Home';
+import SportsIcon from '@material-ui/icons/Sports';
+import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import IconButton from '@material-ui/core/IconButton';
-
+import {
+    getFixture,
+} from "../../../api"
 
 
 class Fixture extends React.Component {
@@ -18,21 +31,39 @@ class Fixture extends React.Component {
         this.handleNext = this.handleNext.bind(this);
         this.handleBack = this.handleBack.bind(this); // you are missing this line
         this.state = {
-            fixture:
-            {
-                date: "2020/07/14",
-                homeLogo: "https://media.api-sports.io/football/teams/49.png",
-                homeName: "Chelsea",
-                homeScore: "1",
-                awayLogo: "https://media.api-sports.io/football/teams/71.png",
-                awayName: "Norwich City",
-                awayScore: "0",
-                isFinished: false,
-                isStarted: false
-
-            },
-
+            isLoading: true,
+            fixture: [],
+            status: null
         }
+    }
+
+    async componentDidMount() {
+        await this.fetchData();
+    }
+
+
+    async fetchData() {
+        const fixtureData = await getFixture(this.props.location.state.matchId);
+        Promise.all([fixtureData]).then((response) => {
+            this.setState({
+                fixture: response["0"].data.api.fixtures["0"],
+                isLoading: false,
+                status: response["0"].data.api.fixtures["0"].statusShort
+            })
+        }).then(() => {
+            console.log(this.state.status);
+            if (this.state.status == "1H" || this.state.status == "HT"
+                || this.state.status == "2H" || this.state.status == "ET" || this.state.status == "P") {
+                console.log("Match is live, fetching realtime data");
+                this.interval = setInterval(() => {
+                    this.fetchData();
+                }, 15000); //fetch api data every 15sec
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     handleNext() {
@@ -45,6 +76,8 @@ class Fixture extends React.Component {
 
 
     render() {
+        const { isLoading, fixture } = this.state;
+        console.log(fixture);
         const styles = {
             mainContainer: {
                 flex: 1,
@@ -60,7 +93,6 @@ class Fixture extends React.Component {
                 marginLeft: "6em",
                 padding: '1em',
                 display: "relative", justifyContent: "space-around", alignItems: "center",
-
             }
         }
 
@@ -68,22 +100,30 @@ class Fixture extends React.Component {
             display: "flex",
             justifyContent: "space-evenly",
             alignItems: "center",
-            marginBottom: "1em",
+            marginBottom: "3em",
             height: "4em",
         }
 
         const panes = [
-            {
-                menuItem: 'TIMELINE',
-                render: () => <TimeLine> </TimeLine>,
-            },
+
             {
                 menuItem: 'LINEUP',
-                render: () => <LineUp> </LineUp>
+                render: () =>
+                    <LineUp home={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.homeTeam.team_name]}
+                        homeLogo={this.state.fixture.homeTeam.logo}
+                        away={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.awayTeam.team_name]}
+                        awayLogo={this.state.fixture.awayTeam.logo}
+                    >
+
+                    </LineUp>
             },
             {
                 menuItem: 'STATS',
-                render: () => <Stats> </Stats>
+                render: () => <Stats stats={this.state.fixture.statistics} home={fixture.homeTeam} away={fixture.awayTeam}> </Stats>
+            },
+            {
+                menuItem: 'TIMELINE',
+                render: () => <TimeLine> </TimeLine>,
             },
             {
                 menuItem: 'HEAD TO HEAD',
@@ -91,57 +131,130 @@ class Fixture extends React.Component {
             },
         ]
 
-        return (
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const timestampOffset = 28800;
 
-            <Paper style={{ width: "90%", marginLeft: "3em", marginTop: "3em", }}>
-                <div style={{ marginBottom: "2em" }}>
-                    <IconButton
-                        children={<ArrowBackOutlinedIcon> </ArrowBackOutlinedIcon>}
-                        color='secondary'
-                        onClick={this.handleBack}
-                        variant="secondary">
-                    </IconButton>
-                    <span> Premier Leauge </span>
-                    <span style={{ marginLeft: "1em" }}> 07/26 </span>
+        if (isLoading)
+            return <Spinner
+                as="span"
+                animation="border"
+                size="xlg"
+                role="status"
+                aria-hidden="true"
+            />
+        else
+            return (
+                <Paper style={{ width: "90%", marginLeft: "3em", marginTop: "3em", }}>
+                    <div style={{ marginBottom: "3em" }}>
 
-                </div>
+                        <IconButton
+                            children={<ArrowBackOutlinedIcon> </ArrowBackOutlinedIcon>}
+                            color='secondary'
+                            onClick={this.handleBack}
+                            variant="secondary">
+                        </IconButton>
 
-                <Segment basic textAlign='center'>
-                    <div style={fixtureStyle}>
-                        {/* <img
-                            alt="Home"
-                            src={this.state.fixture.homeLogo}
-                            style={{ height: "80px", width: "80px", marginTop: "1em" }}
-                        /> */}
-                        <Segment basic >
-                            <Image src={this.state.fixture.homeLogo} style={{ height: "80px", width: "80px", marginTop: "1em" }} centered />
-                            <b style={{ fontSize: "1.25em", }}> CHELSEA </b>
-                        </Segment>
-                        <div style={{ display: "inline-block", marginTop: "1em" }}>
-                            <span className="" style={{ fontSize: "3em", }}> {this.state.fixture.homeScore} </span>
-                            {/* <span className="" style={{ fontSize: "1.25em", marginLeft: "1.25em", marginRight: "1.25em", color: "rgb(0, 0, 0, 0.7)"}}> FT </span> */}
-                            <span className="" style={{ display: "inline-block", verticalAlign: "top", fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "green" }}> 45' </span>
-                            {/* <span className="" style={{ fontSize: "1.25em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> VS </span> */}
-                            <span className="" style={{ fontSize: "3em", }}> {this.state.fixture.awayScore} </span>
-                        </div>
-                        <Segment basic style={{ marginBottom: "1em" }}>
-                            <Image src={this.state.fixture.awayLogo} style={{ height: "80px", width: "80px", }} centered />
-                            <b style={{ fontSize: "1.25em", }}> NORWICH </b>
-                        </Segment>
-                        {/* <img
-                            alt="Away"
-                            src={this.state.fixture.awayLogo}
-                            style={{ height: "80px", width: "80px", marginTop: "1em" }}
-                        /> */}
+                        <span style={{ marginRight: "1em" }}>
+                            <img
+                                alt="Away"
+                                src={fixture.league.logo}
+                                style={{ height: "25px", width: "25px", verticalAlign: "middle", }}
+                            />
+                            <span> {fixture.round.replace("Regular Season - ", "EPL R")} </span>
+                        </span>
+
+                        <span style={{ marginRight: "1em" }}>
+                            <CalendarTodayIcon style={{ color: "rgb(56, 0, 60)", marginRight: "0.25em" }}>  </CalendarTodayIcon>
+                            {months[new Date((fixture.event_timestamp - timestampOffset) * 1000).getMonth()] + "."
+                                + new Date((fixture.event_timestamp - timestampOffset) * 1000).getDate() + ", "
+                                + new Date((fixture.event_timestamp) * 1000).getHours() + ":"
+                                + ("0" + new Date((fixture.event_timestamp - timestampOffset) * 1000).getMinutes()).substr(-2) + " PST"
+                            }
+                        </span>
+
+
+                        <span style={{ marginRight: "1em" }}>
+                            <HomeIcon style={{ color: "rgb(56, 0, 60)", marginRight: "0.25em" }}> </HomeIcon>
+                            {fixture.venue}
+                        </span>
+
+                        <span style={{ marginRight: "1em" }}>
+                            <SportsIcon style={{ color: "rgb(56, 0, 60)", marginRight: "0.25em" }}>  </SportsIcon>
+                            {fixture.referee != null ? fixture.referee : "TBD"}
+                        </span>
+
                     </div>
 
-                    <Divider section style={{ marginTop: "2.5em" }} />
-                </Segment>
+                    <Segment basic textAlign='center'>
+                        <div style={fixtureStyle}>
+                            <Segment basic >
+                                <Image src={fixture.homeTeam.logo} style={{ height: "80px", width: "80px", marginTop: "1em", marginBottom: "0.5em" }} centered />
+                                <b style={{ fontSize: "1.25em", }}> {fixture.homeTeam.team_name} </b>
+                            </Segment>
 
-                <Tab defaultindex={2} panes={panes} />
+                            <div style={{ display: "inline-block", marginTop: "1em" }}>
+                                <span className="" style={{ fontSize: "3em", }}> {fixture.goalsHomeTeam} </span>
 
-            </Paper >
-        )
+                                {fixture.statusShort == "FT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "rgb(56, 0, 60)" }}> FT </span> :
+                                    fixture.statusShort == "NS" || fixture.statusShort == "TBD" || fixture.statusShort == "PST" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "black" }}> VS </span> :
+                                        fixture.statusShort == "HT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "green" }}> HT </span> :
+                                            fixture.statusShort == "1H" || fixture.statusShort == "2H" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "green" }}> {fixture.elapsed + "'"} </span> :
+                                                <span className="" style={{ fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "green" }}> </span>
+                                }
+
+                                <span className="" style={{ fontSize: "3em", }}> {fixture.goalsAwayTeam} </span>
+                            </div>
+
+                            <Segment basic style={{ marginBottom: "1em" }}>
+                                <Image src={fixture.awayTeam.logo} style={{ height: "80px", width: "80px", marginBottom: "0.5em" }} centered />
+                                <b style={{ fontSize: "1.25em", }}>  {fixture.awayTeam.team_name}  </b>
+                            </Segment>
+                        </div>
+
+                        <Divider section style={{ marginTop: "2.5em" }} />
+
+                        <div>
+                            <TableContainer style={{paddingLeft: "2em", paddingRight: "2em"}}>
+                                <Table size="small" aria-label="a dense table">
+                                    <TableBody>
+                                        {fixture.events == null ? "" :
+                                            fixture.events.map((event, index) => (
+                                                event.type == "Goal" && event.teamName == fixture.homeTeam.team_name ?
+                                                    <TableRow key={index}>
+                                                        <TableCell align="left"  style={{ width: '0.01%', }}>
+                                                            <p key={index}> {event.player + " " + event.elapsed + "'"} </p>                                                        </TableCell>
+                                                        <TableCell align="center"  style={{ width: '0.01%', }}> <SportsSoccerIcon> </SportsSoccerIcon> </TableCell>
+                                                        <TableCell align="right"  style={{ width: '0.01%', }}> 
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    : event.type == "Goal" && event.teamName == fixture.awayTeam.team_name ?
+                                                        <TableRow key={index}>
+                                                            <TableCell align="left"  style={{ width: '0.01%', }}>
+                                                            </TableCell>
+                                                            <TableCell align="center"  style={{ width: '0.01%', }}> <SportsSoccerIcon> </SportsSoccerIcon> </TableCell>
+                                                            <TableCell align="right"  style={{ width: '0.01%', }}>
+                                                                <p key={index}> {event.player + " " + event.elapsed + "'"} </p>                                                            </TableCell>
+                                                        </TableRow>
+                                                        : null
+                                            ))
+                                        }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            {/* {fixture.events == null ? "" :
+                                fixture.events.map((event, index) => {
+                                    return event.type == "Goal" ?
+                                        <p key={index}> {event.player + " " + event.elapsed + "'"} </p>:
+                                        ""
+                                })
+                            } */}
+                        </div>
+                    </Segment>
+
+                    <Tab defaultindex={2} panes={panes} />
+
+                </Paper >
+            )
     }
 
 }
