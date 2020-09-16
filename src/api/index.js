@@ -67,7 +67,7 @@ export const getTeamData = (game, key) => ({
 });
 
 
-// a fixture information
+// One fixture information
 export const getFixture = async (fixtureId) => {
     try {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/id/' + fixtureId, {
@@ -84,10 +84,29 @@ export const getFixture = async (fixtureId) => {
     return null;
 }
 
-export const getFixtureData = fixture =>
-    fixture => ({
-        date: fixture['event_date']
-    });
+// Head-to-Head fixtures information
+export const getHeadToHeadFixtures = async (homeId, awayId) => {
+    try {
+        return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/h2h/' + homeId + '/' + awayId, {
+            headers:
+            {
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
+                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+            }
+        }).then((response) => getFixturesData(response.data.api.fixtures));
+
+    } catch (e) {
+        console.log(e);
+    }
+    return null;
+}
+
+export const getHeadToHeadData = fixtures =>
+    fixtures.map(fixture => ({
+        goalsHome: fixture['goalsHomeTeam'],
+        goalsAway: fixture['goalsAwayTeam'],
+    })); 
+
 
 // League Standing
 export const getLeagueStandings = async () => {

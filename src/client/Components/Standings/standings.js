@@ -29,7 +29,7 @@ export class Standings extends React.Component {
         };
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         const leagueStandings = await getLeagueStandings();
         Promise.all([leagueStandings]).then((response)=> {
             console.log(response);

@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import Button from 'react-bootstrap/Button';
 import { Divider, Header, Image, Segment } from 'semantic-ui-react'
 import 'react-vertical-timeline-component/style.min.css';
 import { Tab } from 'semantic-ui-react'
 import TimeLine from './timeline';
 import LineUp from './lineup';
 import Stats from './stats';
+import HeadToHead from './head2head';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
@@ -28,7 +27,6 @@ import {
 class Fixture extends React.Component {
     constructor(props) {
         super(props);
-        this.handleNext = this.handleNext.bind(this);
         this.handleBack = this.handleBack.bind(this); // you are missing this line
         this.state = {
             isLoading: true,
@@ -66,10 +64,6 @@ class Fixture extends React.Component {
         clearInterval(this.interval);
     }
 
-    handleNext() {
-        this.props.history.push('/page2');
-    }
-
     handleBack() {
         this.props.history.push('/');
     }
@@ -77,6 +71,9 @@ class Fixture extends React.Component {
 
     render() {
         const { isLoading, fixture } = this.state;
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const timestampOffset = 28800;
+
         console.log(fixture);
         const styles = {
             mainContainer: {
@@ -105,7 +102,10 @@ class Fixture extends React.Component {
         }
 
         const panes = [
-
+            {
+                menuItem: 'HEAD TO HEAD',
+                render: () => <HeadToHead homeId={this.state.fixture.homeTeam.team_id} awayId={this.state.fixture.awayTeam.team_id}> </HeadToHead>
+            },
             {
                 menuItem: 'LINEUP',
                 render: () =>
@@ -114,7 +114,6 @@ class Fixture extends React.Component {
                         away={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.awayTeam.team_name]}
                         awayLogo={this.state.fixture.awayTeam.logo}
                     >
-
                     </LineUp>
             },
             {
@@ -125,14 +124,8 @@ class Fixture extends React.Component {
                 menuItem: 'TIMELINE',
                 render: () => <TimeLine> </TimeLine>,
             },
-            {
-                menuItem: 'HEAD TO HEAD',
-                render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>
-            },
-        ]
 
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const timestampOffset = 28800;
+        ]
 
         if (isLoading)
             return <Spinner
@@ -140,8 +133,7 @@ class Fixture extends React.Component {
                 animation="border"
                 size="xlg"
                 role="status"
-                aria-hidden="true"
-            />
+                aria-hidden="true" />
         else
             return (
                 <Paper style={{ width: "90%", marginLeft: "3em", marginTop: "3em", }}>
@@ -214,25 +206,25 @@ class Fixture extends React.Component {
                         <Divider section style={{ marginTop: "2.5em" }} />
 
                         <div>
-                            <TableContainer style={{paddingLeft: "2em", paddingRight: "2em"}}>
+                            <TableContainer style={{ paddingLeft: "2em", paddingRight: "2em" }}>
                                 <Table size="small" aria-label="a dense table">
                                     <TableBody>
                                         {fixture.events == null ? "" :
                                             fixture.events.map((event, index) => (
                                                 event.type == "Goal" && event.teamName == fixture.homeTeam.team_name ?
                                                     <TableRow key={index}>
-                                                        <TableCell align="left"  style={{ width: '0.01%', }}>
+                                                        <TableCell align="left" style={{ width: '0.01%', }}>
                                                             <p key={index}> {event.player + " " + event.elapsed + "'"} </p>                                                        </TableCell>
-                                                        <TableCell align="center"  style={{ width: '0.01%', }}> <SportsSoccerIcon> </SportsSoccerIcon> </TableCell>
-                                                        <TableCell align="right"  style={{ width: '0.01%', }}> 
+                                                        <TableCell align="center" style={{ width: '0.01%', }}> <SportsSoccerIcon> </SportsSoccerIcon> </TableCell>
+                                                        <TableCell align="right" style={{ width: '0.01%', }}>
                                                         </TableCell>
                                                     </TableRow>
                                                     : event.type == "Goal" && event.teamName == fixture.awayTeam.team_name ?
                                                         <TableRow key={index}>
-                                                            <TableCell align="left"  style={{ width: '0.01%', }}>
+                                                            <TableCell align="left" style={{ width: '0.01%', }}>
                                                             </TableCell>
-                                                            <TableCell align="center"  style={{ width: '0.01%', }}> <SportsSoccerIcon> </SportsSoccerIcon> </TableCell>
-                                                            <TableCell align="right"  style={{ width: '0.01%', }}>
+                                                            <TableCell align="center" style={{ width: '0.01%', }}> <SportsSoccerIcon> </SportsSoccerIcon> </TableCell>
+                                                            <TableCell align="right" style={{ width: '0.01%', }}>
                                                                 <p key={index}> {event.player + " " + event.elapsed + "'"} </p>                                                            </TableCell>
                                                         </TableRow>
                                                         : null
@@ -241,13 +233,6 @@ class Fixture extends React.Component {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            {/* {fixture.events == null ? "" :
-                                fixture.events.map((event, index) => {
-                                    return event.type == "Goal" ?
-                                        <p key={index}> {event.player + " " + event.elapsed + "'"} </p>:
-                                        ""
-                                })
-                            } */}
                         </div>
                     </Segment>
 

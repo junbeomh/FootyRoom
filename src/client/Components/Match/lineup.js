@@ -121,13 +121,13 @@ class LineUp extends React.Component {
                                             src={homeLogo}
                                             style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
                                         />
-                                        <span> {home.formation} </span>
+                                        <span> {home.formation != null ? home.formation: " "} </span>
                                     </div>
                                 </TableCell>
                                 <TableCell align="center" style={columnStyle}> STARTING XI </TableCell>
                                 <TableCell align="right" style={columnStyle}>
                                     <div>
-                                        <span> {away.formation} </span>
+                                        <span> {away.formation != null ? away.formation: " "} </span>
                                         <img
                                             alt="Away"
                                             src={awayLogo}
