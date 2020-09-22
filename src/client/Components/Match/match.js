@@ -49,7 +49,6 @@ class Fixture extends React.Component {
                 status: response["0"].data.api.fixtures["0"].statusShort
             })
         }).then(() => {
-            console.log(this.state.status);
             if (this.state.status == "1H" || this.state.status == "HT"
                 || this.state.status == "2H" || this.state.status == "ET" || this.state.status == "P") {
                 console.log("Match is live, fetching realtime data");
@@ -73,8 +72,6 @@ class Fixture extends React.Component {
         const { isLoading, fixture } = this.state;
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const timestampOffset = 28800;
-
-        console.log(fixture);
         const styles = {
             mainContainer: {
                 flex: 1,
@@ -103,8 +100,16 @@ class Fixture extends React.Component {
 
         const panes = [
             {
-                menuItem: 'HEAD TO HEAD',
-                render: () => <HeadToHead homeId={this.state.fixture.homeTeam.team_id} awayId={this.state.fixture.awayTeam.team_id}> </HeadToHead>
+                menuItem: 'TIMELINE',
+                render: () =>
+                    <TimeLine events={this.state.fixture.events == null ? null : this.state.fixture.events}
+                        homeLogo={this.state.fixture.homeTeam.logo}
+                        homeName={this.state.fixture.homeTeam.team_name}
+                        homeLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.homeTeam.team_name]}
+                        awayLogo={this.state.fixture.awayTeam.logo}
+                        awayName={this.state.fixture.awayTeam.team_name}
+                        awayLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.awayTeam.team_name]}>
+                    </TimeLine>,
             },
             {
                 menuItem: 'LINEUP',
@@ -120,11 +125,11 @@ class Fixture extends React.Component {
                 menuItem: 'STATS',
                 render: () => <Stats stats={this.state.fixture.statistics} home={fixture.homeTeam} away={fixture.awayTeam}> </Stats>
             },
-            {
-                menuItem: 'TIMELINE',
-                render: () => <TimeLine> </TimeLine>,
-            },
 
+            {
+                menuItem: 'HEAD TO HEAD',
+                render: () => <HeadToHead homeId={this.state.fixture.homeTeam.team_id} awayId={this.state.fixture.awayTeam.team_id}> </HeadToHead>
+            },
         ]
 
         if (isLoading)
@@ -211,7 +216,7 @@ class Fixture extends React.Component {
                                     <TableBody>
                                         {fixture.events == null ? "" :
                                             fixture.events.map((event, index) => (
-                                                event.type == "Goal" && event.teamName == fixture.homeTeam.team_name ?
+                                                event.type == "Goal" && event.detail != "Missed Penalty" && event.teamName == fixture.homeTeam.team_name ?
                                                     <TableRow key={index}>
                                                         <TableCell align="left" style={{ width: '0.01%', }}>
                                                             <p key={index}> {event.player + " " + event.elapsed + "'"} </p>                                                        </TableCell>
@@ -219,7 +224,7 @@ class Fixture extends React.Component {
                                                         <TableCell align="right" style={{ width: '0.01%', }}>
                                                         </TableCell>
                                                     </TableRow>
-                                                    : event.type == "Goal" && event.teamName == fixture.awayTeam.team_name ?
+                                                    : event.type == "Goal" && event.detail != "Missed Penalty" && event.teamName == fixture.awayTeam.team_name ?
                                                         <TableRow key={index}>
                                                             <TableCell align="left" style={{ width: '0.01%', }}>
                                                             </TableCell>

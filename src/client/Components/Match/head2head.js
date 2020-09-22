@@ -5,7 +5,6 @@ import { Divider, Header, Image, Segment } from 'semantic-ui-react'
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from "@material-ui/core/styles";
 
@@ -97,7 +96,7 @@ class HeadToHead extends React.Component {
                     >
                         {this.state.fixtures.map((fixture, index) => (
 
-                            <Grid style={{paddingTop: "2em"}}>
+                            <Grid style={{paddingTop: "1.5em"}} key={index}>
                                 <Card className={classes.root}>
                                     <CardHeader
                                         className={classes.header}
@@ -113,7 +112,7 @@ class HeadToHead extends React.Component {
                                             <Image src={fixture.homeTeam.logo} style={{ height: "50px", width: "50px", }} centered />
 
                                             <div style={{ display: "inline-block", }}>
-                                                <span className="" style={{ fontSize: "1em", }}> {fixture.goalsHome ? fixture.goalsHome: "0"} </span>
+                                                <span className="" style={{ fontSize: "1.75em", }}> {fixture.goalsHome ? fixture.goalsHome: "0"} </span>
 
                                                 {fixture.status == "FT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "rgb(56, 0, 60)" }}> FT </span> :
                                                     fixture.status == "NS" || fixture.status == "TBD" || fixture.status == "PST" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "4em", marginRight: "4em", color: "black" }}> VS </span> :
@@ -124,7 +123,7 @@ class HeadToHead extends React.Component {
 
 
 
-                                                <span className="" style={{ fontSize: "1em", }}> {fixture.goalsAway ? fixture.goalsAway: "0"} </span>
+                                                <span className="" style={{ fontSize: "1.75em", }}> {fixture.goalsAway ? fixture.goalsAway: "0"} </span>
                                             </div>
 
                                             <Image src={fixture.awayTeam.logo} style={{ height: "50px", width: "50px", }} centered />

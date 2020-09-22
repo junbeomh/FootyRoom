@@ -107,9 +107,7 @@ export class Standings extends React.Component {
                                                 src={row.logo}
                                                 style={{ height: "30px", width: "30px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
                                             />
-                                            <b>  {row.name.includes("Manchester") ? row.name.replace("Manchester", "Man") :
-                                                row.name
-                                            } </b>
+                                            <b>  {row.name.includes("Manchester") ? row.name.replace("Manchester", "Man") : row.name  } </b>
                                         </div>
                                     </TableCell>
                                     <TableCell onClick={this.handleClick(row.name)} align="right" style={columnStyle}>{row.data.matchsPlayed}</TableCell>
