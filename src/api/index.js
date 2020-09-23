@@ -153,7 +153,7 @@ export const getTeamStandingData = (team, key) => ({
 // League Top Scorer 
 export const getTopScorersAPI = async () => {
     try {
-        return await axios.get('https://api-football-v1.p.rapidapi.com/v2/topscorers/524', {
+        return await axios.get('https://api-football-v1.p.rapidapi.com/v2/topscorers/2790', {
             headers:
             {
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',

@@ -74,8 +74,6 @@ class Fixtures extends React.Component {
       backgroundColor: "#fff",
       color: "#000",
       overflowY: "scroll",
-      paddingTop: "2em",
-      paddingLeft: "2em",
       textAlign: "center"
     };
     return (
@@ -99,8 +97,6 @@ class Fixtures extends React.Component {
 
     return (
       <div style={{
-        marginTop: '.75em',
-        marginBottom: '.75em',
       }}>
         <Carousel
           defaultActiveIndex={0}

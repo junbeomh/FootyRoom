@@ -31,7 +31,7 @@ export class Standings extends React.Component {
 
     async componentDidMount() {
         const leagueStandings = await getLeagueStandings();
-        Promise.all([leagueStandings]).then((response)=> {
+        Promise.all([leagueStandings]).then((response) => {
             console.log(response);
             this.setState({
                 rows: leagueStandings,
@@ -90,7 +90,7 @@ export class Standings extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.rows.map((row) => (
+                            {this.state.rows.map((row, index) => (
                                 <TableRow hover key={row.id}>
                                     <TableCell
                                         onClick={this.handleClick(row.name)}
@@ -107,7 +107,7 @@ export class Standings extends React.Component {
                                                 src={row.logo}
                                                 style={{ height: "30px", width: "30px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
                                             />
-                                            <b>  {row.name.includes("Manchester") ? row.name.replace("Manchester", "Man") : row.name  } </b>
+                                            <b>  {row.name.includes("Manchester") ? row.name.replace("Manchester", "Man") : row.name} </b>
                                         </div>
                                     </TableCell>
                                     <TableCell onClick={this.handleClick(row.name)} align="right" style={columnStyle}>{row.data.matchsPlayed}</TableCell>
@@ -119,16 +119,15 @@ export class Standings extends React.Component {
                                     <TableCell onClick={this.handleClick(row.name)} align="right" style={columnStyle}>{row.goalsDiff}</TableCell>
                                     <TableCell onClick={this.handleClick(row.name)} align="right" style={columnStyle}>{row.pts}</TableCell>
                                     <TableCell>
-                                        {/* <div className="box">
-                                        {
+                                        <div className="box" >
+                                            {row.forme.split("").map(character =>
+                                                character == "W" ? <CheckCircleRoundedIcon style={winGameStyle}> </CheckCircleRoundedIcon> :
+                                                    character == "D" ? <RemoveCircleRoundedIcon style={drawGameStyle} > </RemoveCircleRoundedIcon> :
+                                                        character == "L" ? <CancelRoundedIcon style={looseGameStyle} > </CancelRoundedIcon> :
+                                                            <RadioButtonUncheckedIcon style={{ color: "grey" }}> </RadioButtonUncheckedIcon>) 
 
-                                                            row.forme.split("").map(character =>
-                                                                character == "W" ? <CheckCircleRoundedIcon style={winGameStyle}> </CheckCircleRoundedIcon> :
-                                                                    character == "D" ? <RemoveCircleRoundedIcon style={drawGameStyle} > </RemoveCircleRoundedIcon> :
-                                                                        character == "L" ? <CancelRoundedIcon style={looseGameStyle} > </CancelRoundedIcon> :
-                                                                            <RadioButtonUncheckedIcon style={{ color: "grey" }}> </RadioButtonUncheckedIcon>)
-                                        }
-                                    </div> */}
+                                            }
+                                        </div>
                                     </TableCell>
 
                                 </TableRow>

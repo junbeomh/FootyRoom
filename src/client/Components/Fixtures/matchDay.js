@@ -73,16 +73,16 @@ class FixtureCard extends React.Component {
                             + new Date((fixture.timeStamp) * 1000).getHours() + ":"
                             + ("0" + new Date((fixture.timeStamp - timestampOffset) * 1000).getMinutes()).substr(-2) + " PST"
                             + "  -  " + (fixture.statusLong == "Time to be defined" ? "TBD" : fixture.statusLong)
-                        } style={{ fontSize: "0.75em", justifyContent: "space-around", alignItems: "center", }} />
+                        } style={{ fontSize: "0.65em", justifyContent: "space-around", alignItems: "center", }} />
 
                         <div style={fixtureStyle}>
                             <img
                                 alt="Home"
                                 src={fixture.homeTeam.logo}
-                                style={{ height: "50px", width: "50px", marginTop: "1em" }}
+                                style={{ height: "40px", width: "40px", marginTop: "1em" }}
                             />
                             <div style={{ display: "inline-block", verticalAlign: "top", marginTop: "1.5em" }}>
-                                <span className="" style={{ fontSize: "1.5em", marginLeft: "0.5em" }}> {fixture.goalsHome} </span>
+                                <span className="" style={{ fontSize: "1.5em", marginLeft: "0.5em" }}> {fixture.goalsHome ? fixture.goalsHome : 0} </span>
 
                                 {/*
                                 TBD : Time To Be Defined
@@ -103,12 +103,12 @@ class FixtureCard extends React.Component {
                                 }
 
 
-                                <span className="" style={{ fontSize: "1.5em", marginRight: "0.5em" }}> {fixture.goalsAway} </span>
+                                <span className="" style={{ fontSize: "1.5em", marginRight: "0.5em" }}> {fixture.goalsAway ? fixture.goalsAway : 0} </span>
                             </div>
                             <img
                                 alt="Away"
                                 src={fixture.awayTeam['logo']}
-                                style={{ height: "50px", width: "50px", marginTop: "1em" }}
+                                style={{ height: "40px", width: "40px", marginTop: "1em" }}
                             />
                         </div>
                         <Progress
@@ -152,7 +152,7 @@ class FixtureCard extends React.Component {
 
             },
             containerStyle: {
-                paddingLeft: '13em',
+                paddingLeft: '11em',
                 paddingRight: '11em',
                 paddingTop: '2em',
                 paddingBottom: '4em',

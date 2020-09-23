@@ -6,6 +6,7 @@ import { Tab } from 'semantic-ui-react'
 import TimeLine from './timeline';
 import LineUp from './lineup';
 import Stats from './stats';
+import MatchTabs from './tabs';
 import HeadToHead from './head2head';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -100,18 +101,6 @@ class Fixture extends React.Component {
 
         const panes = [
             {
-                menuItem: 'TIMELINE',
-                render: () =>
-                    <TimeLine events={this.state.fixture.events == null ? null : this.state.fixture.events}
-                        homeLogo={this.state.fixture.homeTeam.logo}
-                        homeName={this.state.fixture.homeTeam.team_name}
-                        homeLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.homeTeam.team_name]}
-                        awayLogo={this.state.fixture.awayTeam.logo}
-                        awayName={this.state.fixture.awayTeam.team_name}
-                        awayLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.awayTeam.team_name]}>
-                    </TimeLine>,
-            },
-            {
                 menuItem: 'LINEUP',
                 render: () =>
                     <LineUp home={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.homeTeam.team_name]}
@@ -125,7 +114,18 @@ class Fixture extends React.Component {
                 menuItem: 'STATS',
                 render: () => <Stats stats={this.state.fixture.statistics} home={fixture.homeTeam} away={fixture.awayTeam}> </Stats>
             },
-
+            {
+                menuItem: 'TIMELINE',
+                render: () =>
+                    <TimeLine events={this.state.fixture.events == null ? null : this.state.fixture.events}
+                        homeLogo={this.state.fixture.homeTeam.logo}
+                        homeName={this.state.fixture.homeTeam.team_name}
+                        homeLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.homeTeam.team_name]}
+                        awayLogo={this.state.fixture.awayTeam.logo}
+                        awayName={this.state.fixture.awayTeam.team_name}
+                        awayLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.awayTeam.team_name]}>
+                    </TimeLine>,
+            },
             {
                 menuItem: 'HEAD TO HEAD',
                 render: () => <HeadToHead homeId={this.state.fixture.homeTeam.team_id} awayId={this.state.fixture.awayTeam.team_id}> </HeadToHead>
@@ -241,7 +241,7 @@ class Fixture extends React.Component {
                         </div>
                     </Segment>
 
-                    <Tab defaultindex={2} panes={panes} />
+                    <MatchTabs fixture={this.state.fixture}> </MatchTabs>
 
                 </Paper >
             )
