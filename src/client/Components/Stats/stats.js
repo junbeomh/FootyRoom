@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import NavBar from '../Nav/nav.js';
 import Spinner from 'react-bootstrap/Spinner';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import countries from 'i18n-iso-countries';
 import Flag from 'react-world-flags'
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,10 +68,6 @@ function Row(props) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
-    // console.log(
-    //     "South Korea => " +
-    //     countries.getAlpha2Code("South Korea", "en")
-    // );
     return (
         <React.Fragment>
             <TableRow align="center" className={classes.root}>

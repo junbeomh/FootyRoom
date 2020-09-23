@@ -4,14 +4,13 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import Geocode from 'react-geocode';
 import { Button } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
-import {getTeams,} from "../../../api";
+import { getTeams, } from "../../../api";
 import "../../styles/index.css";
 
 const mapStyles = {
   width: '100%',
-  height: '50%',
+  height: '75%',
   position: 'relative',
-  paddingTop: "3em"
 };
 
 export class Teams extends Component {
@@ -60,7 +59,7 @@ export class Teams extends Component {
     this.reverseGeocode(teams);
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.setState();
   }
 
@@ -101,7 +100,7 @@ export class Teams extends Component {
       console.log(data.length);
       return (
         <div className="map-container">
-        <NavBar> </NavBar>
+          <NavBar> </NavBar>
           <Map
             google={this.props.google}
             zoom={14}
@@ -154,14 +153,17 @@ export class Teams extends Component {
       )
     }
     else
-      return <Spinner
-        as="span"
-        animation="border"
-        size="xlg"
-        role="status"
-        aria-hidden="true"
-
-      />
+      return (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "16em" }}>
+          <Spinner
+            as="span"
+            animation="border"
+            size="xlg"
+            role="status"
+            aria-hidden="true"
+          />
+        </div>
+      );
   }
 }
 

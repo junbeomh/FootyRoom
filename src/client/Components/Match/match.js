@@ -1,13 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import { Divider, Header, Image, Segment } from 'semantic-ui-react'
-import 'react-vertical-timeline-component/style.min.css';
-import { Tab } from 'semantic-ui-react'
-import TimeLine from './timeline';
-import LineUp from './lineup';
-import Stats from './stats';
+import { Divider, Image, Segment } from 'semantic-ui-react'
 import MatchTabs from './tabs';
-import HeadToHead from './head2head';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -99,49 +93,21 @@ class Fixture extends React.Component {
             height: "4em",
         }
 
-        const panes = [
-            {
-                menuItem: 'LINEUP',
-                render: () =>
-                    <LineUp home={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.homeTeam.team_name]}
-                        homeLogo={this.state.fixture.homeTeam.logo}
-                        away={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.awayTeam.team_name]}
-                        awayLogo={this.state.fixture.awayTeam.logo}
-                    >
-                    </LineUp>
-            },
-            {
-                menuItem: 'STATS',
-                render: () => <Stats stats={this.state.fixture.statistics} home={fixture.homeTeam} away={fixture.awayTeam}> </Stats>
-            },
-            {
-                menuItem: 'TIMELINE',
-                render: () =>
-                    <TimeLine events={this.state.fixture.events == null ? null : this.state.fixture.events}
-                        homeLogo={this.state.fixture.homeTeam.logo}
-                        homeName={this.state.fixture.homeTeam.team_name}
-                        homeLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.homeTeam.team_name]}
-                        awayLogo={this.state.fixture.awayTeam.logo}
-                        awayName={this.state.fixture.awayTeam.team_name}
-                        awayLineUp={this.state.fixture.lineups == null ? null : this.state.fixture.lineups[this.state.fixture.awayTeam.team_name]}>
-                    </TimeLine>,
-            },
-            {
-                menuItem: 'HEAD TO HEAD',
-                render: () => <HeadToHead homeId={this.state.fixture.homeTeam.team_id} awayId={this.state.fixture.awayTeam.team_id}> </HeadToHead>
-            },
-        ]
 
         if (isLoading)
-            return <Spinner
-                as="span"
-                animation="border"
-                size="xlg"
-                role="status"
-                aria-hidden="true" />
+            return (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "16em" }}>
+                    <Spinner
+                        as="span"
+                        animation="border"
+                        size="xlg"
+                        role="status"
+                        aria-hidden="true"
+                    />
+                </div>);
         else
             return (
-                <Paper style={{ width: "90%", marginLeft: "3em", marginTop: "3em", }}>
+                <Paper style={{ width: "90%", marginLeft: "3em", marginTop: "1em", marginBottom: "1em" }}>
                     <div style={{ marginBottom: "3em" }}>
 
                         <IconButton
@@ -153,10 +119,11 @@ class Fixture extends React.Component {
 
                         <span style={{ marginRight: "1em" }}>
                             <img
-                                alt="Away"
+                                alt="logo"
                                 src={fixture.league.logo}
                                 style={{ height: "25px", width: "25px", verticalAlign: "middle", }}
                             />
+
                             <span> {fixture.round.replace("Regular Season - ", "EPL R")} </span>
                         </span>
 
@@ -185,7 +152,9 @@ class Fixture extends React.Component {
                     <Segment basic textAlign='center'>
                         <div style={fixtureStyle}>
                             <Segment basic >
-                                <Image src={fixture.homeTeam.logo} style={{ height: "80px", width: "80px", marginTop: "1em", marginBottom: "0.5em" }} centered />
+                                <div style={{ height: "80px", width: "80px", marginTop: "1em", marginBottom: "0.5em" }}>
+                                    <Image src={fixture.homeTeam.logo} style={{}} centered />
+                                </div>
                                 <b style={{ fontSize: "1.25em", }}> {fixture.homeTeam.team_name} </b>
                             </Segment>
 
@@ -203,7 +172,9 @@ class Fixture extends React.Component {
                             </div>
 
                             <Segment basic style={{ marginBottom: "1em" }}>
-                                <Image src={fixture.awayTeam.logo} style={{ height: "80px", width: "80px", marginBottom: "0.5em" }} centered />
+                                <div style={{ height: "80px", width: "80px", marginBottom: "0.5em" }}>
+                                    <Image src={fixture.awayTeam.logo} style={{}} centered />
+                                </div>
                                 <b style={{ fontSize: "1.25em", }}>  {fixture.awayTeam.team_name}  </b>
                             </Segment>
                         </div>

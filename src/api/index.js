@@ -49,7 +49,6 @@ export const getFixturesData = games =>
         stadium: game['venue'],
         id: game['fixture_id'],
         date: game['event_date'],
-        referee: game['referee'],
         round: game['round'],
         status: game['statusShort'],
         statusLong: game['status'],

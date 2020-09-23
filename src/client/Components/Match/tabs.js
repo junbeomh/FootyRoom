@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 function MatchTabs(props) {
     const classes = useStyles();
-    const {fixture} = props;
+    const { fixture } = props;
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
 

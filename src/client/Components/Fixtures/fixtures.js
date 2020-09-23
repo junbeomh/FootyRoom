@@ -50,18 +50,7 @@ class Fixtures extends React.Component {
     };
   }
 
-  // async componentDidMount() {
-  //   const allRounds = await getAllRounds();
-  //   console.log(allRounds);
-  //   this.setState({
-  //     rounds: allRounds
-  //   })
-  // }
-
   renderItems() {
-    // for (var i = 0; i < this.state.fixtures.length; i++) {
-    //   this.state.fixtures.push(<div><FixtureCard key={i}> </FixtureCard></div>);
-    // }
     const styles = {
       display: "flex",
       flexDirection: "column",

@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import PeopleIcon from '@material-ui/icons/People';
 
 class LineUp extends React.Component {
     constructor(props) {
@@ -100,148 +101,157 @@ class LineUp extends React.Component {
         console.log(this.state.homeLogo);
         console.log(this.state.awayLogo);
 
-        return (
-            <div>
-                <div>
-                    <SoccerLineUp
-                        size={"responsive"}
-                        color={"#588f58"}
-                        pattern={"lines"}
-                        homeTeam={this.buildHomeTeam(home)}
-                        awayTeam={this.buildAwayTeam(away)} />
+        if (home == null || away == null) {
+            return (
+                <div >
+                    <div style={{display: 'flex',  justifyContent:'center', alignItems:'center',}}> <PeopleIcon style={{width: "1.75em", height: "1.75em", color: "grey"}}> </PeopleIcon> </div>
+                    <div style={{display: 'flex',  justifyContent:'center', alignItems:'center',}}> <p style={{color: "grey"}}> The line-up will be posted before the match </p> </div>
                 </div>
-                <TableContainer component={Paper} style={{}}>
-                    <Table stickyHeader size="small" aria-label="collapsible  table" style={{ borderBottom: "none" }}>
-                        <TableHead>
-                            <TableRow hover>
-                                <TableCell align="left" style={columnStyle}>
-                                    <div>
-                                        <img
-                                            alt="Home"
-                                            src={homeLogo}
-                                            style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
-                                        />
-                                        <span> {home.formation != null ? home.formation: " "} </span>
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" style={columnStyle}> STARTING XI </TableCell>
-                                <TableCell align="right" style={columnStyle}>
-                                    <div>
-                                        <span> {away.formation != null ? away.formation: " "} </span>
-                                        <img
-                                            alt="Away"
-                                            src={awayLogo}
-                                            style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
-                                        />
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {home.startXI == null ? "" :
-                                home.startXI.map((order, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell align="left" style={{ fontSize: "1em" }}>
-                                            <p style={{ marginLeft: "2em" }}> {home.startXI[index].number + ". " + home.startXI[index].player}  </p>
-                                        </TableCell>
-                                        <TableCell align="center" style={columnStyle}></TableCell>
-                                        <TableCell align="right" style={{ fontSize: "1em" }}>
-                                            <p style={{ marginRight: "2em" }}>  {away.startXI[index].player + " " + away.startXI[index].number}  </p>
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            }
-                        </TableBody>
-                    </Table>
+            )
+        }
+        else
+            return (
+                <div>
+                    <div>
+                        <SoccerLineUp
+                            size={"responsive"}
+                            color={"#588f58"}
+                            pattern={"lines"}
+                            homeTeam={this.buildHomeTeam(home)}
+                            awayTeam={this.buildAwayTeam(away)} />
+                    </div>
+                    <TableContainer component={Paper} style={{}}>
+                        <Table stickyHeader size="small" aria-label="collapsible  table" style={{ borderBottom: "none" }}>
+                            <TableHead>
+                                <TableRow hover>
+                                    <TableCell align="left" style={columnStyle}>
+                                        <div>
+                                            <img
+                                                alt="Home"
+                                                src={homeLogo}
+                                                style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
+                                            />
+                                            <span> {home.formation} </span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell align="center" style={columnStyle}> STARTING XI </TableCell>
+                                    <TableCell align="right" style={columnStyle}>
+                                        <div>
+                                            <span> {away.formation} </span>
+                                            <img
+                                                alt="Away"
+                                                src={awayLogo}
+                                                style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
+                                            />
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {home.startXI == null ? "" :
+                                    home.startXI.map((order, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="left" style={{ fontSize: "1em" }}>
+                                                <p style={{ marginLeft: "2em" }}> {home.startXI[index].number + ". " + home.startXI[index].player}  </p>
+                                            </TableCell>
+                                            <TableCell align="center" style={columnStyle}></TableCell>
+                                            <TableCell align="right" style={{ fontSize: "1em" }}>
+                                                <p style={{ marginRight: "2em" }}>  {away.startXI[index].player + " " + away.startXI[index].number}  </p>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+                            </TableBody>
+                        </Table>
 
-                </TableContainer>
-                <TableContainer component={Paper}>
-                    <Table stickyHeader size="small" aria-label="collapsible  table" style={{ borderBottom: "none" }}>
-                        <TableHead>
-                            <TableRow hover>
-                                <TableCell align="left" style={columnStyle}>
-                                    <div>
-                                        <img
-                                            alt="Home"
-                                            src={homeLogo}
-                                            style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
-                                        />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" style={columnStyle}> SUBSITTUTES</TableCell>
-                                <TableCell align="right" style={columnStyle}>
-                                    <div>
-                                        <img
-                                            alt="Away"
-                                            src={awayLogo}
-                                            style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
-                                        />
-                                    </div>
-                                </TableCell>
+                    </TableContainer>
+                    <TableContainer component={Paper}>
+                        <Table stickyHeader size="small" aria-label="collapsible  table" style={{ borderBottom: "none" }}>
+                            <TableHead>
+                                <TableRow hover>
+                                    <TableCell align="left" style={columnStyle}>
+                                        <div>
+                                            <img
+                                                alt="Home"
+                                                src={homeLogo}
+                                                style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
+                                            />
+                                        </div>
+                                    </TableCell>
+                                    <TableCell align="center" style={columnStyle}> SUBSITTUTES</TableCell>
+                                    <TableCell align="right" style={columnStyle}>
+                                        <div>
+                                            <img
+                                                alt="Away"
+                                                src={awayLogo}
+                                                style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
+                                            />
+                                        </div>
+                                    </TableCell>
 
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {home.substitutes == null ? "" :
-                                home.substitutes.map((order, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell align="left" style={{ fontSize: "1em" }}>
-                                            <p style={{ marginLeft: "2em" }}> {home.substitutes[index].number + ". " + home.substitutes[index].player}  </p>
-                                        </TableCell>
-                                        <TableCell align="center" style={columnStyle}></TableCell>
-                                        <TableCell align="right" style={{ fontSize: "1em" }}>
-                                            <p style={{ marginRight: "2em" }}>  {away.substitutes[index].player + " " + away.substitutes[index].number}  </p>
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                
-                <TableContainer component={Paper} style={{ paddingBottom: "3em" }}>
-                    <Table stickyHeader size="small" aria-label="collapsible  table" style={{ borderBottom: "none" }}>
-                        <TableHead>
-                            <TableRow hover>
-                                <TableCell align="left" style={columnStyle}>
-                                    <div>
-                                        <img
-                                            alt="Home"
-                                            src={homeLogo}
-                                            style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
-                                        />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" style={columnStyle}> MANAGER </TableCell>
-                                <TableCell align="right" style={columnStyle}>
-                                    <div>
-                                        <img
-                                            alt="Away"
-                                            src={awayLogo}
-                                            style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
-                                        />
-                                    </div>
-                                </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {home.substitutes == null ? "" :
+                                    home.substitutes.map((order, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="left" style={{ fontSize: "1em" }}>
+                                                <p style={{ marginLeft: "2em" }}> {home.substitutes[index].number + ". " + home.substitutes[index].player}  </p>
+                                            </TableCell>
+                                            <TableCell align="center" style={columnStyle}></TableCell>
+                                            <TableCell align="right" style={{ fontSize: "1em" }}>
+                                                <p style={{ marginRight: "2em" }}>  {away.substitutes[index].player + " " + away.substitutes[index].number}  </p>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
+                    <TableContainer component={Paper} style={{ paddingBottom: "3em" }}>
+                        <Table stickyHeader size="small" aria-label="collapsible  table" style={{ borderBottom: "none" }}>
+                            <TableHead>
+                                <TableRow hover>
+                                    <TableCell align="left" style={columnStyle}>
+                                        <div>
+                                            <img
+                                                alt="Home"
+                                                src={homeLogo}
+                                                style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
+                                            />
+                                        </div>
+                                    </TableCell>
+                                    <TableCell align="center" style={columnStyle}> MANAGER </TableCell>
+                                    <TableCell align="right" style={columnStyle}>
+                                        <div>
+                                            <img
+                                                alt="Away"
+                                                src={awayLogo}
+                                                style={{ height: "35px", width: "35px", verticalAlign: "middle", marginLeft: "1em", marginRight: "1em" }}
+                                            />
+                                        </div>
+                                    </TableCell>
 
-                            <TableRow>
-                                <TableCell align="left" style={{ fontSize: "1em" }}>
-                                    <p style={{ marginLeft: "2em" }}> {home.coach}   </p>
-                                </TableCell>
-                                <TableCell align="center" style={columnStyle}></TableCell>
-                                <TableCell align="right" style={{ fontSize: "1em" }}>
-                                    <p style={{ marginRight: "2em" }}>  {away.coach}  </p>
-                                </TableCell>
-                            </TableRow>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
 
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
-        );
+                                <TableRow>
+                                    <TableCell align="left" style={{ fontSize: "1em" }}>
+                                        <p style={{ marginLeft: "2em" }}> {home.coach}   </p>
+                                    </TableCell>
+                                    <TableCell align="center" style={columnStyle}></TableCell>
+                                    <TableCell align="right" style={{ fontSize: "1em" }}>
+                                        <p style={{ marginRight: "2em" }}>  {away.coach}  </p>
+                                    </TableCell>
+                                </TableRow>
+
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            );
     }
 }
 

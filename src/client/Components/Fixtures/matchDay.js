@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Grid, Card, Icon, Image, Button } from 'semantic-ui-react';
+import React from 'react';
+import { Grid, Card } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { Progress } from 'react-sweet-progress';
 import Spinner from 'react-bootstrap/Spinner';
@@ -45,8 +45,8 @@ class FixtureCard extends React.Component {
         console.log(this.state.fixtures);
         const cardStyle = {
             width: '20em',
-            marginBottom: "2em",
-            marginTop: "0.5em"
+            marginBottom: "1em",
+            // marginTop: "0.5em"
         }
         const fixtureStyle = {
             display: "flex",
@@ -62,29 +62,27 @@ class FixtureCard extends React.Component {
         const timestampOffset = 28800;
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return this.state.fixtures.map((fixture, index) => (
-            <Grid.Column key={index}>
-                <Card.Group itemsPerRow={3} onClick={this.handleClick(fixture)}>
-                    <Card style={cardStyle}>
+            <Grid.Column onClick={this.handleClick(fixture)} mobile={16} tablet={8} computer={4}>
+                <Card style={cardStyle}>
+                    <Card.Content header={
+                        months[new Date((fixture.timeStamp - timestampOffset) * 1000).getMonth()] + "."
+                        + new Date((fixture.timeStamp - timestampOffset) * 1000).getDate() + " "
+                        + new Date((fixture.timeStamp - timestampOffset) * 1000).getFullYear() + ", "
+                        + new Date((fixture.timeStamp) * 1000).getHours() + ":"
+                        + ("0" + new Date((fixture.timeStamp - timestampOffset) * 1000).getMinutes()).substr(-2) + " PST"
+                        + "  -  " + (fixture.statusLong == "Time to be defined" ? "TBD" : fixture.statusLong)
+                    } style={{ fontSize: "0.65em", justifyContent: "space-around", alignItems: "center", }} />
 
-                        <Card.Content header={
-                            months[new Date((fixture.timeStamp - timestampOffset) * 1000).getMonth()] + "."
-                            + new Date((fixture.timeStamp - timestampOffset) * 1000).getDate() + " "
-                            + new Date((fixture.timeStamp - timestampOffset) * 1000).getFullYear() + ", "
-                            + new Date((fixture.timeStamp) * 1000).getHours() + ":"
-                            + ("0" + new Date((fixture.timeStamp - timestampOffset) * 1000).getMinutes()).substr(-2) + " PST"
-                            + "  -  " + (fixture.statusLong == "Time to be defined" ? "TBD" : fixture.statusLong)
-                        } style={{ fontSize: "0.65em", justifyContent: "space-around", alignItems: "center", }} />
+                    <div style={fixtureStyle}>
+                        <img
+                            alt="Home"
+                            src={fixture.homeTeam.logo}
+                            style={{ height: "40px", width: "40px", marginTop: "1em" }}
+                        />
+                        <div style={{ display: "inline-block", verticalAlign: "top", marginTop: "1.5em" }}>
+                            <span className="" style={{ fontSize: "1.5em", marginLeft: "0.5em" }}> {fixture.goalsHome} </span>
 
-                        <div style={fixtureStyle}>
-                            <img
-                                alt="Home"
-                                src={fixture.homeTeam.logo}
-                                style={{ height: "40px", width: "40px", marginTop: "1em" }}
-                            />
-                            <div style={{ display: "inline-block", verticalAlign: "top", marginTop: "1.5em" }}>
-                                <span className="" style={{ fontSize: "1.5em", marginLeft: "0.5em" }}> {fixture.goalsHome ? fixture.goalsHome : 0} </span>
-
-                                {/*
+                            {/*
                                 TBD : Time To Be Defined
                                 NS : Not Started
                                 1H : First Half, Kick Off
@@ -94,45 +92,44 @@ class FixtureCard extends React.Component {
                                 P : Penalty In Progress
                                 FT : Match Finished
                                 PST: Match Postponed */}
-                                {
-                                    fixture.status == "FT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "rgb(56, 0, 60)" }}> FT </span> :
-                                        fixture.status == "NS" || fixture.status == "TBD" || fixture.status == "PST" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "black" }}> VS </span> :
-                                            fixture.status == "HT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> HT </span> :
-                                                fixture.status == "1H" || fixture.status == "2H" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> {fixture.elapsed + "'"} </span> :
-                                                    <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> </span>
-                                }
+                            {
+                                fixture.status == "FT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "rgb(56, 0, 60)" }}> FT </span> :
+                                    fixture.status == "NS" || fixture.status == "TBD" || fixture.status == "PST" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "black" }}> VS </span> :
+                                        fixture.status == "HT" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> HT </span> :
+                                            fixture.status == "1H" || fixture.status == "2H" ? <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> {fixture.elapsed + "'"} </span> :
+                                                <span className="" style={{ fontSize: "1.15em", marginLeft: "1.25em", marginRight: "1.25em", color: "green" }}> </span>
+                            }
 
 
-                                <span className="" style={{ fontSize: "1.5em", marginRight: "0.5em" }}> {fixture.goalsAway ? fixture.goalsAway : 0} </span>
-                            </div>
-                            <img
-                                alt="Away"
-                                src={fixture.awayTeam['logo']}
-                                style={{ height: "40px", width: "40px", marginTop: "1em" }}
-                            />
+                            <span className="" style={{ fontSize: "1.5em", marginRight: "0.5em" }}> {fixture.goalsAway} </span>
                         </div>
-                        <Progress
-                            theme={{
-                                success: {
-                                    symbol: '   ‍',
-                                    color: 'rgb(56, 0, 60)'
-                                },
-                                active: {
-                                    symbol: '  ',
-                                    color: 'rgb(59, 167, 86)'
-                                },
+                        <img
+                            alt="Away"
+                            src={fixture.awayTeam['logo']}
+                            style={{ height: "40px", width: "40px", marginTop: "1em" }}
+                        />
+                    </div>
+                    <Progress
+                        theme={{
+                            success: {
+                                symbol: '   ‍',
+                                color: 'rgb(56, 0, 60)'
+                            },
+                            active: {
+                                symbol: '  ',
+                                color: 'rgb(59, 167, 86)'
+                            },
 
-                                default: {
-                                    symbol: '  ',
-                                    color: 'orange'
-                                }
-                            }}
-                            style={{ marginLeft: "1em", marginBottom: "" }}
-                            percent={(fixture.elapsed / 90) * 100} />
+                            default: {
+                                symbol: '  ',
+                                color: 'orange'
+                            }
+                        }}
+                        style={{ marginLeft: "1em", marginBottom: "" }}
+                        percent={(fixture.elapsed / 90) * 100} />
 
-                    </Card>
-                </Card.Group>
-            </Grid.Column >
+                </Card>
+            </Grid.Column>
         ));
     }
 
@@ -170,17 +167,21 @@ class FixtureCard extends React.Component {
         }
 
         if (isLoading)
-            return <Spinner
-                as="span"
-                animation="border"
-                size="xlg"
-                role="status"
-                aria-hidden="true"
-            />
+            return (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "16em"}}>
+                    <Spinner
+                        as="span"
+                        animation="border"
+                        size="xlg"
+                        role="status"
+                        aria-hidden="true"
+                    />
+                </div>
+            )
         else
             return (
                 <div style={styles.mainContainer}>
-                    <h3 style={{ marginBottom: "2em" }}> Matchday {this.state.matchDay.replace("Regular_Season_-_", "")} of 38 </h3>
+                    <h3 style={{ marginBottom: "1em", fontSize: "1.25em" }}> Matchday {this.state.matchDay.replace("Regular_Season_-_", "")} of 38 </h3>
                     <Grid columns={'two'} >
                         <Grid.Row style={styles.containerStyle}>
                             {this.renderItems()}

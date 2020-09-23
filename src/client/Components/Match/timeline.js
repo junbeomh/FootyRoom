@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import ImportExportTwoToneIcon from '@material-ui/icons/ImportExportTwoTone';
 import StopIcon from '@material-ui/icons/Stop';
 import CancelIcon from '@material-ui/icons/Cancel';
+import TimerIcon from '@material-ui/icons/Timer';
 import Divider from '@material-ui/core/Divider';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import { withStyles } from "@material-ui/core/styles";
@@ -84,52 +85,89 @@ export class TimeLine extends React.Component {
 
             },
         }
-        console.log(events);
-        console.log(homeLineUp);
-        // console.log(awayLineUp);
-        return (
-            <div>
-                <Grid
-                    container
-                    spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justify="center"
-                    style={{}}
-                >
-                    {events.reverse().map((event, index) => (
+        if (events == null) {
+            return (
+                <div >
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}> <TimerIcon style={{ width: "1.75em", height: "1.75em", color: "grey" }}> </TimerIcon> </div>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}> <p style={{ color: "grey" }}> The time-line will be posted when the match starts </p> </div>
+                </div>
+            )
+        } else
+            return (
+                <div>
+                    <Grid
+                        container
+                        spacing={0}
+                        direction="column"
+                        alignItems="center"
+                        justify="center"
+                        style={{}}
+                    >
+                        {events.reverse().map((event, index) => (
 
-                        <Grid style={{ paddingTop: "1.5em" }} key={index}>
-                            <Card className={classes.root}>
+                            <Grid style={{ paddingTop: "1.5em" }} key={index}>
+                                <Card className={classes.root}>
 
-                                <CardHeader
-                                    className={classes.header}
-                                    subheader={
-                                        <div>
-                                            <div style={styles.headerLeft}>
-                                                {event.type == "subst" ? <div> <ImportExportTwoToneIcon style={{ color: "green" }}> </ImportExportTwoToneIcon> <b> SUBSTITUTION </b> </div> :
-                                                    event.type == "Goal" && event.detail == "Missed Penalty" ? <div> <CancelIcon style={{ color: "red" }}> </CancelIcon>  <b> {event.detail.toUpperCase()} </b> </div> :
-                                                        event.type == "Goal" && (event.detail == "Normal Goal" || event.detail == "Penalty") ? <div> <SportsSoccerIcon style={{ color: "black" }}> </SportsSoccerIcon> <b> GOAL!!! </b> </div> :
-                                                            event.type == "Card" && event.detail == "Yellow Card" ? <div> <StopIcon style={{ color: "yellow" }}> </StopIcon> <b> {event.detail.toUpperCase()} </b> </div> :
-                                                                event.type == "Card" && event.detail == "Red Card" ? <div> <StopIcon style={{ color: "red" }}> </StopIcon> <b> {event.detail.toUpperCase()} </b> </div> :
-                                                                    ""}
+                                    <CardHeader
+                                        className={classes.header}
+                                        subheader={
+                                            <div>
+                                                <div style={styles.headerLeft}>
+                                                    {event.type == "subst" ? <div> <ImportExportTwoToneIcon style={{ color: "green" }}> </ImportExportTwoToneIcon> <b> SUBSTITUTION </b> </div> :
+                                                        event.type == "Goal" && event.detail == "Missed Penalty" ? <div> <CancelIcon style={{ color: "red" }}> </CancelIcon>  <b> {event.detail.toUpperCase()} </b> </div> :
+                                                            event.type == "Goal" && (event.detail == "Normal Goal" || event.detail == "Penalty") ? <div> <SportsSoccerIcon style={{ color: "black" }}> </SportsSoccerIcon> <b> GOAL!!! </b> </div> :
+                                                                event.type == "Card" && event.detail == "Yellow Card" ? <div> <StopIcon style={{ color: "yellow" }}> </StopIcon> <b> {event.detail.toUpperCase()} </b> </div> :
+                                                                    event.type == "Card" && event.detail == "Red Card" ? <div> <StopIcon style={{ color: "red" }}> </StopIcon> <b> {event.detail.toUpperCase()} </b> </div> :
+                                                                        ""}
+                                                </div>
+                                                <div style={styles.headerRight}>
+                                                    <b> {event.elapsed + "' " + (event.elapsed_plus != null ? "+ " + event.elapsed_plus + "'" : "")} </b>
+                                                </div>
                                             </div>
-                                            <div style={styles.headerRight}>
-                                                <b> {event.elapsed + "' " + (event.elapsed_plus != null ? "+ " + event.elapsed_plus + "'" : "")} </b>
-                                            </div>
-                                        </div>
-                                    } />
+                                        } />
 
-                                <CardContent>
-                                    {event.type == "subst" ?
-                                        <div>
+                                    <CardContent>
+                                        {event.type == "subst" ?
                                             <div>
                                                 <div>
-                                                    <span style={{ color: "green", fontSize: "12px" }}> IN </span>
+                                                    <div>
+                                                        <span style={{ color: "green", fontSize: "12px" }}> IN </span>
+                                                        <p style={{ fontSize: "16px" }}> {event.player} </p>
+                                                    </div>
+
+                                                    <div style={{ display: "flex", flexDirection: "row" }}>
+                                                        <img
+                                                            alt="Away"
+                                                            src={event.teamName == homeName ? homeLogo : awayLogo}
+                                                            style={{ height: "16px", width: "16px", marginRight: "0.5em" }}
+                                                        />
+                                                        <p> {event.teamName} </p>
+                                                    </div>
+                                                </div>
+                                                {"\n"}
+                                                <div style={{ marginTop: "1em" }}>
+                                                    <div>
+                                                        <span style={{ color: "red", fontSize: "12px", }}> OUT </span>
+                                                        <p style={{ fontSize: "16px" }}> {event.assist} </p>
+                                                    </div>
+
+                                                    <div style={{ display: "flex", flexDirection: "row" }}>
+                                                        <img
+                                                            alt="Away"
+                                                            src={event.teamName == homeName ? homeLogo : awayLogo}
+                                                            style={{ height: "16px", width: "16px", marginRight: "0.5em" }}
+                                                        />
+                                                        <p> {event.teamName} </p>
+
+                                                    </div>
+                                                </div>
+                                            </div> :
+                                            <div>
+                                                <div>
                                                     <p style={{ fontSize: "16px" }}> {event.player} </p>
                                                 </div>
 
-                                                <div style={{ display: "flex", flexDirection: "row" }}>
+                                                <div style={{ display: "flex", flexDirection: "row", }}>
                                                     <img
                                                         alt="Away"
                                                         src={event.teamName == homeName ? homeLogo : awayLogo}
@@ -138,56 +176,24 @@ export class TimeLine extends React.Component {
                                                     <p> {event.teamName} </p>
                                                 </div>
                                             </div>
-                                            {"\n"}
-                                            <div style={{ marginTop: "1em" }}>
-                                                <div>
-                                                    <span style={{ color: "red", fontSize: "12px", }}> OUT </span>
-                                                    <p style={{ fontSize: "16px" }}> {event.assist} </p>
-                                                </div>
+                                        }
 
-                                                <div style={{ display: "flex", flexDirection: "row" }}>
-                                                    <img
-                                                        alt="Away"
-                                                        src={event.teamName == homeName ? homeLogo : awayLogo}
-                                                        style={{ height: "16px", width: "16px", marginRight: "0.5em" }}
-                                                    />
-                                                    <p> {event.teamName} </p>
-
-                                                </div>
-                                            </div>
-                                        </div> :
-                                        <div>
+                                        {event.comments ?
                                             <div>
-                                                <p style={{ fontSize: "16px" }}> {event.player} </p>
+                                                <Divider style={{ marginTop: "1em", marginBottom: "1em" }} />
+                                                <Typography style={{ fontSize: "14px" }}> {bull} {event.player + " was booked for " + event.comments.toLowerCase() + "."} </Typography>
                                             </div>
+                                            :
+                                            ""
+                                        }
 
-                                            <div style={{ display: "flex", flexDirection: "row", }}>
-                                                <img
-                                                    alt="Away"
-                                                    src={event.teamName == homeName ? homeLogo : awayLogo}
-                                                    style={{ height: "16px", width: "16px", marginRight: "0.5em" }}
-                                                />
-                                                <p> {event.teamName} </p>
-                                            </div>
-                                        </div>
-                                    }
-
-                                    {event.comments ?
-                                        <div>
-                                            <Divider style={{ marginTop: "1em", marginBottom: "1em" }} />
-                                            <Typography style={{ fontSize: "14px" }}> {bull} {event.player + " was booked for " + event.comments.toLowerCase() + "."} </Typography>
-                                        </div>
-                                        :
-                                        ""
-                                    }
-
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </div >
-        );
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </div >
+            );
     }
 }
 
