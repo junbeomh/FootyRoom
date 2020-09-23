@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect} from 'react';
+import NavBar from '../Nav/nav.js';
 import Spinner from 'react-bootstrap/Spinner';
 import countries from 'i18n-iso-countries';
-import ReactCountryFlag from "react-country-flag";
 import Flag from 'react-world-flags'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,7 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import {
     getTopScorersAPI,
 } from "../../../api"
-import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
@@ -162,6 +161,7 @@ export default function CollapsibleTable() {
     else
         return (
             <div style={{ display: "internal" }}>
+            <NavBar> </NavBar>
                 {/* <div>
                 <SportsSoccerTwoToneIcon> </SportsSoccerTwoToneIcon>
                 <span> Most Goals </span>  </div> */}

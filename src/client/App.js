@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Navigation from './Components/Nav/nav.js';
+import NavBar from './Components/Nav/nav.js';
 import Fixtures from './Components/Fixtures/fixtures.js';
 import Standings from './Components/Standings/standings.js';
 import Stats from './Components/Stats/stats.js';
@@ -20,16 +20,13 @@ class App extends React.Component {
 
   render() {
     const styles = {
-      padding: '20px',
-      width: '250px',
-      height: '250px',
-      backgroundColor: 'yellow',
+      width: '100%',
+      height: '50%',
     };
 
     return (
       <Router>
-        <div id="App">
-          <Navigation />
+        <div id="App" style={styles}>
           <Switch>
             {/* <Route path='/' exact component={<Games games={this.state.games} />}/> */}
             {/* <Games games={this.state.games} /> */}

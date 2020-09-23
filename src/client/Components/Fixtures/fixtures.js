@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
-import Card from "react-bootstrap/Card";
-import { DropdownButton, MenuItem } from 'react-bootstrap'
-import FixtureCard from "./matchDay"
-import Carousel from 'react-bootstrap/Carousel'
-import {
-  getAllRounds,
-} from "../../../api"
+import React from "react";
+import NavBar from '../Nav/nav.js';
+import FixtureCard from "./matchDay";
+import Carousel from "react-bootstrap/Carousel";
 class Fixtures extends React.Component {
   constructor(props) {
     super();
@@ -14,7 +10,7 @@ class Fixtures extends React.Component {
       rounds: [
         "Regular_Season_-_1",
         "Regular_Season_-_2",
-        "Regular_Season_-_3",
+        "Regular_Season_-_3"
         // "Regular_Season_-_4",
         // "Regular_Season_-_5",
         // "Regular_Season_-_6",
@@ -51,7 +47,7 @@ class Fixtures extends React.Component {
         // "Regular_Season_-_37",
         // "Regular_Season_-_38"
       ]
-    }
+    };
   }
 
   // async componentDidMount() {
@@ -76,13 +72,11 @@ class Fixtures extends React.Component {
       overflowY: "scroll",
       textAlign: "center"
     };
-    return (
-      this.state.rounds.map((round, index) =>
-        <Carousel.Item key={index}>
-          <FixtureCard key={index} matchDay={round} >
-          </FixtureCard>
-        </Carousel.Item>)
-    );
+    return this.state.rounds.map((round, index) => (
+      <Carousel.Item key={index}>
+        <FixtureCard key={index} matchDay={round}></FixtureCard>
+      </Carousel.Item>
+    ));
   }
   render() {
     var settings = {
@@ -92,17 +86,31 @@ class Fixtures extends React.Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      initialSlide: 2,
+      initialSlide: 2
     };
 
     return (
-      <div style={{
-      }}>
+      <div style={{}}>
+        <NavBar />
+
         <Carousel
           defaultActiveIndex={0}
           interval={null}
-          prevIcon={<span aria-hidden="false" className="carousel-control-prev-icon" style={{ outlineColor: "black" }} />}
-          nextIcon={<span aria-hidden="false" className="carousel-control-next-icon" style={{ outlineColor: "black" }} />}>
+          prevIcon={
+            <span
+              aria-hidden="false"
+              className="carousel-control-prev-icon"
+              style={{ outlineColor: "black" }}
+            />
+          }
+          nextIcon={
+            <span
+              aria-hidden="false"
+              className="carousel-control-next-icon"
+              style={{ outlineColor: "black" }}
+            />
+          }
+        >
           {this.renderItems()}
         </Carousel>
       </div>
@@ -110,5 +118,4 @@ class Fixtures extends React.Component {
   }
 }
 
-export default Fixtures
-
+export default Fixtures;

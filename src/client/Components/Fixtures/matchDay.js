@@ -63,7 +63,7 @@ class FixtureCard extends React.Component {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return this.state.fixtures.map((fixture, index) => (
             <Grid.Column key={index}>
-                <Card.Group itemsPerRow={2} onClick={this.handleClick(fixture)}>
+                <Card.Group itemsPerRow={3} onClick={this.handleClick(fixture)}>
                     <Card style={cardStyle}>
 
                         <Card.Content header={

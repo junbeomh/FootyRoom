@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
+import NavBar from '../Nav/nav.js';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import Geocode from 'react-geocode';
 import { Button } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
-import {
-  getTeams,
-  getTeamsData
-} from "../../../api";
+import {getTeams,} from "../../../api";
 import "../../styles/index.css";
 
 const mapStyles = {
   width: '100%',
-  height: '52em',
-  position: 'relative'
+  height: '50%',
+  position: 'relative',
+  paddingTop: "3em"
 };
 
 export class Teams extends Component {
@@ -101,7 +100,8 @@ export class Teams extends Component {
     if (!isLoading && data.length > 1) {
       console.log(data.length);
       return (
-        <div className="map-container" style={{ paddingTop: '3em' }}>
+        <div className="map-container">
+        <NavBar> </NavBar>
           <Map
             google={this.props.google}
             zoom={14}
