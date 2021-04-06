@@ -1,17 +1,13 @@
 import axios from "axios";
 
-// API-FOOTBALL beta version:
-// key: 02c73d826723d3e02b2f338e71363d62
-// host: v3.football.api-sports.io
-
 // All available Fixture Rounds 
 export const getAllRounds = async () => {
     try {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/2790', {
             headers:
             {
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+                'x-rapidapi-host': API_HOST,
+                'x-rapidapi-key': API_KEY,
             }
         }).then((response) => response.data.api.fixtures)
 
@@ -28,8 +24,8 @@ export const getRoundFixtures = async (round) => {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/' + round, {
             headers:
             {
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+                'x-rapidapi-host': API_HOST,
+                'x-rapidapi-key': API_KEY,
             }
         }).then((response) => getFixturesData(response.data.api.fixtures))
 
@@ -72,8 +68,8 @@ export const getFixture = async (fixtureId) => {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/id/' + fixtureId, {
             headers:
             {
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+                'x-rapidapi-host': API_HOST,
+                'x-rapidapi-key': API_KEY,
             }
         })
 
@@ -89,8 +85,8 @@ export const getHeadToHeadFixtures = async (homeId, awayId) => {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/fixtures/h2h/' + homeId + '/' + awayId, {
             headers:
             {
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+                'x-rapidapi-host': API_HOST,
+                'x-rapidapi-key': API_KEY,
             }
         }).then((response) => getFixturesData(response.data.api.fixtures));
 
@@ -113,8 +109,8 @@ export const getLeagueStandings = async () => {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/leagueTable/2790', {
             headers:
             {
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+                'x-rapidapi-host': API_HOST,
+                'x-rapidapi-key': API_KEY,
             }
         }).then((response) => getTeamsStandingData(response.data.api.standings["0"]))
 
@@ -155,8 +151,8 @@ export const getTopScorersAPI = async () => {
         return await axios.get('https://api-football-v1.p.rapidapi.com/v2/topscorers/2790', {
             headers:
             {
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key': '7d7bfee0e3msh97516a39f39c002p13b4eejsn257543e6dca4'
+                'x-rapidapi-host': API_HOST,
+                'x-rapidapi-key': API_KEY,
             }
         }).then((response) => getTopScorersData(response.data.api.topscorers))
 
@@ -181,19 +177,6 @@ export const getTopScorersData = players =>
         penalty: { won: player['penalty']['won'], success: player['penalty']['success'], missed: player['penalty']['missed'] }
     }));
 
-
-// const getGeoInfo = async () => {
-//     axios.get('https://ipapi.co/json/').then((response) => {
-//         let data = response.data;
-//         this.setState({
-//             countryName: data.country_name,
-//             countryCode: data.country_calling_code
-//         });
-//     }).catch((error) => {
-//         console.log(error);
-//     });
-// };
-
 // League Teams 
 export const getTeamsData = teams =>
     teams.map(team => ({
@@ -202,22 +185,7 @@ export const getTeamsData = teams =>
         logo: team['logo'],
         venue_name: team['venue_name'],
         venue_address: team['venue_address'],
-        // latLng: reverseGeocode(team['venue_name'], team['venue_addresss'])
     }));
-
-// function reverseGeocode(name, address) {
-//     Geocode.fromAddress(name + " " + address).then(
-//         response => {
-//             const lat = response.results[0].geometry.location.lat;
-//             const lng = response.results[0].geometry.location.lng;
-//             console.log(lat + ", " + lng);
-//             return response.results[0].geometry.location
-//         },
-//         error => {
-//             console.error(error);
-//         }
-//     )
-// }
 
 export const getTeams = async () => {
     try {
